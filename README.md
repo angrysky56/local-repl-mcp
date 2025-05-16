@@ -151,4 +151,4 @@ mcp install server.py
 
 ## License
 
-MIT
+[MIT](https://github.com/angrysky56/local-repl-mcp/blob/master/LICENSE)
