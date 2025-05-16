@@ -1,6 +1,6 @@
 # LocalREPL MCP Server
 
-A locally-running Python REPL server that integrates with Claude Desktop through the Model Context Protocol (MCP). 
+A locally-running Python REPL server that integrates with Claude Desktop through the Model Context Protocol (MCP).
 Unlike ForeverVM, this runs entirely on your local machine with no need for API keys or remote execution.
 
 ## Features
@@ -11,6 +11,8 @@ Unlike ForeverVM, this runs entirely on your local machine with no need for API 
 - **No API Keys**: No registration, signup, or API keys required
 - **Privacy-Focused**: Your code never leaves your machine
 - **Simple & Secure**: Straightforward implementation with minimal dependencies
+
+![alt text](image.png)
 
 ## Installation
 
@@ -31,7 +33,7 @@ Unlike ForeverVM, this runs entirely on your local machine with no need for API 
    ```bash
    # Using uv (recommended)
    uv venv --python 3.12 --seed
-   
+
    # Or using standard venv
    python -m venv .venv
    ```
@@ -40,7 +42,7 @@ Unlike ForeverVM, this runs entirely on your local machine with no need for API 
    ```bash
    # On Linux/macOS
    . .venv/bin/activate
-   
+
    # On Windows
    .venv\Scripts\activate
    ```
@@ -49,7 +51,7 @@ Unlike ForeverVM, this runs entirely on your local machine with no need for API 
    ```bash
    # Using uv
    uv pip install -e .
-   
+
    # Using pip
    pip install -e .
    ```
