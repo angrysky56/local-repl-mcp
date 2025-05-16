@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "local-repl-mcp"
+version = "0.1.0"
+description = "A local Python REPL MCP server that can be used with Claude Desktop"
+authors = [
+    {name = "Claude AI Assistant"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    "mcp>=1.9.0",
+]
+
+[project.scripts]
+local-repl-mcp = "local_repl.server:mcp.run"
