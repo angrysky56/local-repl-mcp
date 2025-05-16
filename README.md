@@ -1,15 +1,15 @@
 # LocalREPL MCP Server
 
 A locally-running Python REPL server that integrates with Claude Desktop through the Model Context Protocol (MCP).
-Unlike ForeverVM, this runs entirely on your local machine with no need for API keys or remote execution.
+This runs entirely on your local machine with no need for API keys or remote execution.
 
 ## Features
 
 - **Completely Local**: Run Python code directly on your machine without any remote dependencies
-- **State Persistence**: Maintain state between code executions (like ForeverVM, but completely local)
+- **State Persistence**: Maintain state between code executions (completely local)
 - **MCP Integration**: Fully compatible with Claude Desktop through the Model Context Protocol
 - **No API Keys**: No registration, signup, or API keys required
-- **Privacy-Focused**: Your code never leaves your machine
+- **Privacy-Focused**: Your code never leaves your machine if you use local models
 - **Simple & Secure**: Straightforward implementation with minimal dependencies
 
 ![alt text](image.png)
@@ -25,54 +25,35 @@ Unlike ForeverVM, this runs entirely on your local machine with no need for API 
 
 1. Clone this repository
    ```bash
-   git clone https://github.com/yourusername/local-repl-mcp.git
-   cd local-repl-mcp
+   git clone https://github.com/angrysky56/local-repl-mcp.git
    ```
 
-2. Create a virtual environment:
-   ```bash
-   # Using uv (recommended)
-   uv venv --python 3.12 --seed
+## Quickstart:
 
-   # Or using standard venv
-   python -m venv .venv
-   ```
+## You can just copy this into your mcp config json edit the path to your own, and should be good to go:
 
-3. Activate the virtual environment:
-   ```bash
-   # On Linux/macOS
-   . .venv/bin/activate
-
-   # On Windows
-   .venv\Scripts\activate
-   ```
-
-4. Install the package:
-   ```bash
-   # Using uv
-   uv pip install -e .
-
-   # Using pip
-   pip install -e .
-   ```
-
-5. Optional: Install additional packages you want to use in your REPL:
-   ```bash
-   uv add numpy pandas matplotlib
-   ```
-
-## Integration with Claude Desktop
-
-Run the following command to generate a configuration file for Claude Desktop:
-
-```bash
-mcp install server.py
+```json
+{
+  "mcp_servers": {
+    "LocalREPL": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl",
+        "run",
+        "server.py"
+      ]
+    }
+  }
+}
 ```
-
-Alternatively, you can use the example configuration in the `example_mcp_config.json` file and manually add it to Claude Desktop's configuration.
 
 ## Usage
 
+# Optional: Install additional packages you want to use in your REPL:
+   ```bash
+   uv add numpy pandas matplotlib
+   ```
 Once the server is installed in Claude Desktop, you can use the following tools:
 
 - `create_python_repl()` - Creates a new Python REPL and returns its ID
@@ -106,7 +87,7 @@ environment_info = get_repl_info(repl_id)
 delete_repl(repl_id)
 ```
 
-## Advantages Over ForeverVM
+## Advantages
 
 - **No Registration**: No need to sign up or request API tokens
 - **Full Privacy**: All code execution happens on your local machine
@@ -115,12 +96,51 @@ delete_repl(repl_id)
 - **Offline Usage**: Works without an internet connection
 - **Free & Open Source**: No associated costs or usage fees
 
+
 ## Development
 
 To run the server during development:
 
 ```bash
 mcp dev server.py
+```
+
+## Try this stuff if you need to, untested:
+
+2. Create a virtual environment:
+   ```bash
+   # Using uv (recommended)
+   uv venv --python 3.12 --seed
+
+   # Or using standard venv
+   python -m venv .venv
+   ```
+
+3. Activate the virtual environment:
+   ```bash
+   # On Linux/macOS
+   . .venv/bin/activate
+
+   # On Windows
+   .venv\Scripts\activate
+   ```
+
+4. cd local-repl-mcp
+   Install the package:
+   ```bash
+   # Using uv
+   uv pip install -e .
+
+   # Using pip
+   pip install -e .
+   ```
+
+## No idea if this works:
+
+Run the following command to generate a configuration file for Claude Desktop:
+
+```bash
+mcp install server.py
 ```
 
 ## Troubleshooting
