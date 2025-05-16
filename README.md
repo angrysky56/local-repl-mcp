@@ -1,7 +1,6 @@
 # LocalREPL MCP Server
 
 A locally-running Python REPL server that integrates with Claude Desktop through the Model Context Protocol (MCP).
-This runs entirely on your local machine with no need for API keys or remote execution.
 
 ## Features
 
