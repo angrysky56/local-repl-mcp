@@ -7,7 +7,7 @@ A locally-running Python REPL server that integrates with Claude Desktop through
 - **Completely Local**: Run Python code directly on your machine without any remote dependencies
 - **State Persistence**: Maintain state between code executions (completely local)
 - **MCP Integration**: Fully compatible with Claude Desktop through the Model Context Protocol
-- **No API Keys**: No registration, signup, or API keys required
+- **No API Keys**: No registration or signup required
 - **Privacy-Focused**: Your code never leaves your machine if you use local models
 - **Simple & Secure**: Straightforward implementation with minimal dependencies
 
