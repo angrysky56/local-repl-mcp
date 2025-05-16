@@ -50,6 +50,9 @@ A locally-running Python REPL server that integrates with Claude Desktop through
 ## Usage
 
 # Optional: Install additional packages you want to use in your REPL:
+
+cd local-repl-mcp
+
    ```bash
    uv add numpy pandas matplotlib
    ```
