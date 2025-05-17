@@ -15,9 +15,9 @@ class PythonREPL:
     """
     def __init__(self, repl_id: Optional[str] = None):
         self.repl_id = repl_id or str(uuid.uuid4())
-        # Initialize a clean environment
-        self.globals: Dict[str, Any] = {'__builtins__': __builtins__}
-        self.locals: Dict[str, Any] = {}
+        # Initialize a single namespace for environment
+        # This is crucial for recursive functions to work properly
+        self.namespace: Dict[str, Any] = {'__builtins__': __builtins__}
     
     def execute(self, code: str) -> Tuple[str, str, Any]:
         """
@@ -45,15 +45,26 @@ class PythonREPL:
         try:
             # Redirect stdout and stderr to our capture objects
             with redirect_stdout(stdout_capture), redirect_stderr(stderr_capture):
-                # First try to evaluate as an expression (for return value)
-                try:
-                    # Use eval for expressions that can return a value
-                    result = eval(code, self.globals, self.locals)
-                except SyntaxError:
-                    # If it's not a valid expression, execute as a statement using exec
-                    exec(code, self.globals, self.locals)
-                # Update locals in globals to maintain state between calls
-                self.globals.update(self.locals)
+                # For multi-line code blocks or statements, use exec
+                # For single expressions where we want a return value, use eval
+                
+                # Check if we're dealing with a single expression or a code block
+                code_stripped = code.strip()
+                
+                # First try using exec for all code (safer for multi-line code)
+                # Use a single namespace for both globals and locals to support recursive functions
+                exec(code, self.namespace, self.namespace)
+                
+                # If it's potentially a simple expression, also try to evaluate it to get a return value
+                # Only do this for single-line code without assignments or imports
+                if ('\n' not in code_stripped and 
+                    '=' not in code_stripped and 
+                    not code_stripped.startswith(('import ', 'from ', 'def ', 'class ', 'if ', 'for ', 'while '))):
+                    try:
+                        result = eval(code_stripped, self.namespace, self.namespace)
+                    except:
+                        # Ignore errors in eval since we already executed with exec
+                        pass
         except Exception:
             # Catch any exceptions and add to stderr
             stderr_capture.write(traceback.format_exc())

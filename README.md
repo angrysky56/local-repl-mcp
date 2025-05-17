@@ -100,6 +100,7 @@ There are several powerful use cases for a local Python REPL integrated with Cla
   }
 }
 ```
+![alt text](image-1.png)
 
 ## Usage
 
@@ -110,7 +111,9 @@ cd local-repl-mcp
    ```bash
    uv add numpy pandas matplotlib
    ```
-Once the server is installed in Claude Desktop, you can use the following tools:
+
+# Once the server is installed in Claude Desktop, you can use the following tools,
+# This info is also available to Claude via the prompt at the end of the server.py and attachable by the + in the Desktop UI:
 
 - `create_python_repl()` - Creates a new Python REPL and returns its ID
 - `run_python_in_repl(code, repl_id)` - Runs Python code in the specified REPL
