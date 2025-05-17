@@ -78,5 +78,9 @@ server.log
 *.bak
 local_settings.py
 
+# databases and privacy
+*.sqlite3
+*.db
+
 # MCP specific
 example_mcp_config_local.json
