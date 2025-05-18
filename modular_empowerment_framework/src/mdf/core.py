@@ -14,11 +14,11 @@ logger = logging.getLogger(__name__)
 
 class Thought:
     """Represents a single thought/action option in the decision process."""
-    
-    def __init__(self, content: str, context: Dict[str, Any] = None):
+
+    def __init__(self, content: str, context: Optional[Dict[str, Any]] = None):
         """
         Initialize a thought.
-        
+
         Args:
             content: The actual content/description of the thought
             context: Additional context or metadata for the thought
@@ -29,7 +29,7 @@ class Thought:
         self.quality_score: float = 0.0
         self.scores: Dict[str, float] = {}
         self.self_reflection_score: float = 0.0
-        
+
     def __str__(self) -> str:
         """String representation of the thought."""
         return f"Thought: {self.content[:50]}... (Quality: {self.quality_score:.2f})"
@@ -37,11 +37,11 @@ class Thought:
 
 class MDFCore:
     """Core implementation of the Modular Decision Framework."""
-    
-    def __init__(self, config: Dict[str, Any] = None):
+
+    def __init__(self, config: Optional[Dict[str, Any]] = None):
         """
         Initialize the MDF system.
-        
+
         Args:
             config: Configuration parameters for the MDF
         """
@@ -74,21 +74,21 @@ class MDFCore:
                 'utilitarianism_as_servant': True
             }
         }
-        
+
         # Override defaults with provided config
         if config:
             self._update_nested_dict(self.config, config)
-        
+
         logger.info("Initialized Modular Decision Framework")
-    
+
     def _update_nested_dict(self, d: Dict, u: Dict) -> Dict:
         """
         Update a nested dictionary with another dictionary.
-        
+
         Args:
             d: Dictionary to update
             u: Dictionary with updates
-            
+
         Returns:
             Updated dictionary
         """
@@ -98,14 +98,14 @@ class MDFCore:
             else:
                 d[k] = v
         return d
-    
+
     def preprocess_inputs(self, inputs: Any) -> Tuple[Dict, Dict, Dict]:
         """
         Clean and structure the input data.
-        
+
         Args:
             inputs: Raw input data
-            
+
         Returns:
             Tuple of (processed_data, user_attributes, user_interests)
         """
@@ -114,34 +114,34 @@ class MDFCore:
         processed_data = {'input': inputs}
         user_attributes = {}
         user_interests = {}
-        
+
         return processed_data, user_attributes, user_interests
-    
+
     def classify_dilemma(self, data: Dict) -> str:
         """
         Classify the type of dilemma.
-        
+
         Args:
             data: Processed input data
-            
+
         Returns:
             Type of dilemma ('ontological', 'epistemic', or 'other')
         """
         # Placeholder implementation - would use NLP techniques in a real implementation
         dilemma_type = 'other'
         logger.debug(f"Classified dilemma as: {dilemma_type}")
-        
+
         return dilemma_type
-    
+
     def generate_thoughts(self, data: Dict, user_attributes: Dict, user_interests: Dict) -> List[Thought]:
         """
         Generate possible thoughts/actions based on the data.
-        
+
         Args:
             data: Processed input data
             user_attributes: Extracted user attributes
             user_interests: Extracted user interests
-            
+
         Returns:
             List of generated thoughts
         """
@@ -151,17 +151,17 @@ class MDFCore:
             Thought("Example thought 2", {"source": "user_interests"}),
             Thought("Example thought 3", {"source": "general_knowledge"})
         ]
-        
+
         logger.debug(f"Generated {len(thoughts)} thoughts")
         return thoughts
-    
+
     def evaluate_metrics(self, thought: Thought) -> Dict[str, float]:
         """
         Evaluate a thought based on multiple metrics.
-        
+
         Args:
             thought: The thought to evaluate
-            
+
         Returns:
             Dictionary of metric scores
         """
@@ -174,71 +174,71 @@ class MDFCore:
             'flexibility': np.random.uniform(0, 10),
             'subtlety': np.random.uniform(0, 10)
         }
-        
+
         logger.debug(f"Evaluated metrics for thought: {metrics}")
         return metrics
-    
+
     def calculate_quality_score(self, metrics: Dict[str, float]) -> float:
         """
         Calculate the overall quality score based on metrics.
-        
+
         Args:
             metrics: Dictionary of metric scores
-            
+
         Returns:
             Overall quality score
         """
         quality_score = 0.0
-        
+
         for metric, value in metrics.items():
             if metric in self.config['metric_weights']:
                 quality_score += value * self.config['metric_weights'][metric]
-        
+
         logger.debug(f"Calculated quality score: {quality_score}")
         return quality_score
-    
+
     def prune_thoughts(self, thoughts: List[Thought]) -> List[Thought]:
         """
         Remove thoughts below the quality score threshold.
-        
+
         Args:
             thoughts: List of thoughts to prune
-            
+
         Returns:
             List of thoughts that meet the threshold
         """
         threshold = self.config['quality_score_threshold']
         pruned_thoughts = [thought for thought in thoughts if thought.quality_score >= threshold]
-        
+
         logger.debug(f"Pruned thoughts from {len(thoughts)} to {len(pruned_thoughts)} (threshold: {threshold})")
         return pruned_thoughts
-    
+
     def select_best_thought(self, thoughts: List[Thought]) -> Optional[Thought]:
         """
         Select the thought with the highest quality score.
-        
+
         Args:
             thoughts: List of thoughts to choose from
-            
+
         Returns:
             The best thought, or None if the list is empty
         """
         if not thoughts:
             logger.warning("No thoughts available for selection")
             return None
-        
+
         best_thought = max(thoughts, key=lambda t: t.quality_score)
         logger.debug(f"Selected best thought: {best_thought}")
-        
+
         return best_thought
-    
+
     def multi_layered_analysis(self, thought: Thought) -> Dict[str, float]:
         """
         Perform a multi-layered analysis of the thought.
-        
+
         Args:
             thought: The thought to analyze
-            
+
         Returns:
             Dictionary of scores from different analysis dimensions
         """
@@ -251,70 +251,70 @@ class MDFCore:
             'historical_context': np.random.uniform(0, 1),
             'explainability': np.random.uniform(0, 1)
         }
-        
+
         logger.debug(f"Multi-layered analysis scores: {scores}")
         return scores
-    
+
     def detect_anomalies(self, thoughts: List[Thought]) -> List[Thought]:
         """
         Detect anomalies in the thoughts.
-        
+
         Args:
             thoughts: List of thoughts to check for anomalies
-            
+
         Returns:
             List of anomalous thoughts
         """
         # Placeholder implementation - would use statistical methods or ML
         anomalies = []
-        
+
         logger.debug(f"Detected {len(anomalies)} anomalies")
         return anomalies
-    
+
     def handle_anomalies(self, anomalies: List[Thought]) -> None:
         """
         Handle detected anomalies.
-        
+
         Args:
             anomalies: List of anomalous thoughts
         """
         # Placeholder implementation
         for anomaly in anomalies:
             anomaly.context['anomaly_handled'] = True
-        
+
         logger.debug(f"Handled {len(anomalies)} anomalies")
-    
+
     def self_reflection(self, thought: Thought) -> float:
         """
         Perform self-reflection on a thought.
-        
+
         Args:
             thought: The thought to reflect on
-            
+
         Returns:
             Self-reflection score
         """
         # Placeholder implementation
         confidence = np.random.uniform(0, 1)
         alignment = np.random.uniform(0, 1)
-        
+
         self_reflection_score = (confidence + alignment) / 2
         logger.debug(f"Self-reflection score: {self_reflection_score}")
-        
+
         return self_reflection_score
-    
+
     def integrate_scores_and_decide(self, thought: Thought) -> Dict[str, Any]:
         """
         Integrate all scores to make a final decision.
-        
+
         Args:
             thought: The thought to decide on
-            
+
         Returns:
             Decision dictionary
         """
         weights = self.config['weights']
-        
+
         final_score = (
             thought.quality_score * weights['quality'] +
             thought.scores['ethical'] * weights['ethical'] +
@@ -324,24 +324,24 @@ class MDFCore:
             thought.scores['historical_context'] * weights['historical_context'] +
             thought.scores['explainability'] * weights['explainability']
         )
-        
+
         decision = {
             'thought': thought.content,
             'final_score': final_score,
             'action_steps': ["Execute thought", "Monitor outcomes"],
             'context': thought.context
         }
-        
+
         logger.debug(f"Integrated decision with final score {final_score}")
         return decision
-    
+
     def execute_action(self, decision: Dict[str, Any]) -> Dict[str, Any]:
         """
         Execute the action based on the decision.
-        
+
         Args:
             decision: The decision to execute
-            
+
         Returns:
             Execution results
         """
@@ -351,17 +351,17 @@ class MDFCore:
             'status': 'success',
             'details': f"Executed: {decision['thought']}"
         }
-        
+
         logger.info(f"Executed action: {decision['thought']}")
         return results
-    
+
     def gather_outcome(self, execution_results: Dict[str, Any]) -> Dict[str, Any]:
         """
         Gather outcome data from execution.
-        
+
         Args:
             execution_results: Results from executing the action
-            
+
         Returns:
             Outcome data
         """
@@ -374,17 +374,17 @@ class MDFCore:
                 'satisfaction': np.random.uniform(0, 1)
             }
         }
-        
+
         logger.debug(f"Gathered outcome: {outcome}")
         return outcome
-    
+
     def collect_feedback(self, outcome: Dict[str, Any]) -> Dict[str, Any]:
         """
         Analyze outcome to generate feedback.
-        
+
         Args:
             outcome: Outcome data
-            
+
         Returns:
             Feedback data
         """
@@ -392,22 +392,22 @@ class MDFCore:
         weight_adjustments = {}
         for key in self.config['weights']:
             weight_adjustments[key] = self.config['weights'][key] * (1 + np.random.uniform(-0.1, 0.1))
-        
+
         # Placeholder implementation for threshold adjustments
         threshold_adjustment = self.config['quality_score_threshold'] * (1 + np.random.uniform(-0.05, 0.05))
-        
+
         feedback = {
             'weight_adjustments': weight_adjustments,
             'threshold_adjustments': threshold_adjustment
         }
-        
+
         logger.debug(f"Collected feedback: {feedback}")
         return feedback
-    
+
     def adapt_framework(self, feedback: Dict[str, Any]) -> None:
         """
         Adjust framework parameters based on feedback.
-        
+
         Args:
             feedback: Feedback data
         """
@@ -415,50 +415,50 @@ class MDFCore:
         for key, value in feedback['weight_adjustments'].items():
             if key in self.config['weights']:
                 self.config['weights'][key] = value
-        
+
         # Update threshold
         self.config['quality_score_threshold'] = feedback['threshold_adjustments']
-        
+
         logger.info("Adapted framework based on feedback")
-    
+
     def main_decision_process(self, inputs: Any) -> Dict[str, Any]:
         """
         Run the complete decision process.
-        
+
         Args:
             inputs: Raw input data
-            
+
         Returns:
             Decision results
         """
         logger.info("Starting main decision process")
-        
+
         # Module 2: Data Collection and Preprocessing
         data, user_attributes, user_interests = self.preprocess_inputs(inputs)
-        
+
         # Module 3: Dilemma Classification
         dilemma_type = self.classify_dilemma(data)
-        
+
         # Module 4: Thought Generation
         thoughts = self.generate_thoughts(data, user_attributes, user_interests)
-        
+
         # Module 5: Evaluation
         for thought in thoughts:
             thought.metrics = self.evaluate_metrics(thought)
             thought.quality_score = self.calculate_quality_score(thought.metrics)
-        
+
         # Module 6: Pruning
         thoughts = self.prune_thoughts(thoughts)
-        
+
         # Module 7: Thought Selection
         best_thought = self.select_best_thought(thoughts)
         if not best_thought:
             logger.error("No viable thoughts found")
             return {'status': 'failure', 'reason': 'No viable thoughts found'}
-        
+
         # Module 8: Multi-Layered Analysis
         best_thought.scores = self.multi_layered_analysis(best_thought)
-        
+
         # Module 9: Anomaly Detection and Handling
         anomalies = self.detect_anomalies(thoughts)
         if anomalies:
@@ -467,26 +467,26 @@ class MDFCore:
             for thought in thoughts:
                 thought.metrics = self.evaluate_metrics(thought)
                 thought.quality_score = self.calculate_quality_score(thought.metrics)
-            
+
             best_thought = self.select_best_thought(thoughts)
             if not best_thought:
                 logger.error("No viable thoughts found after handling anomalies")
                 return {'status': 'failure', 'reason': 'No viable thoughts after anomaly handling'}
-        
+
         # Module 10: Self-Reflection
         best_thought.self_reflection_score = self.self_reflection(best_thought)
-        
+
         # Module 11: Decision Integration and Execution
         decision = self.integrate_scores_and_decide(best_thought)
         execution_results = self.execute_action(decision)
-        
+
         # Module 12: Outcome and Feedback
         outcome = self.gather_outcome(execution_results)
         feedback = self.collect_feedback(outcome)
-        
+
         # Module 13: Framework Adaptation
         self.adapt_framework(feedback)
-        
+
         results = {
             'status': 'success',
             'decision': decision,
@@ -494,6 +494,6 @@ class MDFCore:
             'outcome': outcome,
             'feedback': feedback
         }
-        
+
         logger.info("Completed main decision process")
         return results
