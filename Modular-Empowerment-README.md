@@ -66,7 +66,6 @@ modular_empowerment_framework/
 ### Installation
 
 ```bash
-git clone https://github.com/angrysky56/modular_empowerment_framework.git
 cd modular_empowerment_framework
 ```
 
