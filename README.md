@@ -11,6 +11,9 @@ A locally-running Python REPL server that integrates with Claude Desktop through
 - **Privacy-Focused**: Your code never leaves your machine if you use local models
 - **Simple & Secure**: Straightforward implementation with minimal dependencies
 
+- **New Additions**:
+    See Modular-Empowerment-README.md
+
 # Potential Use Cases for LocalREPL
 
 There are several powerful use cases for a local Python REPL integrated with Claude:
