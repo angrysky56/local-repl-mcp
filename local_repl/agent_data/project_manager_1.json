@@ -1,0 +1,51 @@
+{
+  "agent_id": "project_manager_1",
+  "agent_type": "project_manager",
+  "capabilities": {
+    "organization": 0.9,
+    "planning": 0.9,
+    "delegation": 0.8,
+    "estimation": 0.7,
+    "tracking": 0.8
+  },
+  "energy": 1.0,
+  "empowerment": 0.5,
+  "memory": {},
+  "knowledge_base": [],
+  "history": [],
+  "relationships": {},
+  "notes": "",
+  "tasks_todo": [
+    {
+      "description": "Review and extend research on Neural networks for time series forecasting",
+      "priority": "medium",
+      "status": "pending",
+      "due_date": "2025-05-26T04:07:19.161458"
+    }
+  ],
+  "last_saved": "2025-05-19T10:57:38.423835",
+  "projects": [
+    {
+      "id": "proj_test",
+      "name": "Test Project",
+      "description": "A test project to verify functionality",
+      "status": "new",
+      "created": "2025-05-19T10:58:36.076740",
+      "deadline": "2025-06-18T10:58:36.076746",
+      "tasks": [
+        {
+          "id": "task_1",
+          "description": "Test task for functionality verification",
+          "status": "pending",
+          "created": "2025-05-19T10:58:36.076752",
+          "assigned_to": "memory_adv",
+          "due_date": "2025-05-26T10:58:36.076754"
+        }
+      ],
+      "team": [
+        "memory_adv",
+        "researcher_adv"
+      ]
+    }
+  ]
+}
