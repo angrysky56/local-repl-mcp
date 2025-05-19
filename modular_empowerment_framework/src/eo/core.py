@@ -185,13 +185,29 @@ class EmpowermentModel:
         Returns:
             Estimated empowerment value
         """
-        # Placeholder implementation - would use actual model prediction
-        state_vector = np.array(list(state.values()))
+        # Filter out non-numeric values to prevent array conversion issues
+        numeric_values = []
+        for value in state.values():
+            if isinstance(value, (int, float)) and not isinstance(value, bool):
+                numeric_values.append(value)
+            elif isinstance(value, (list, tuple)) and all(isinstance(v, (int, float)) for v in value):
+                # If it's a list/tuple of numbers, use the average
+                numeric_values.append(sum(value) / len(value) if value else 0.0)
+        
+        # If no numeric values found, use a default approach
+        if not numeric_values:
+            return 0.5  # Default empowerment value
+            
+        # Convert to numpy array of safe numeric values
+        state_vector = np.array(numeric_values)
         action_value = float(hash(str(action)) % 1000) / 1000.0
 
         # Simple linear model for demonstration
-        empowerment = np.dot(state_vector[:min(len(state_vector), len(self.weights))],
-                           self.weights[:min(len(state_vector), len(self.weights))]) + action_value
+        # Ensure dimensions match by using the minimum length
+        weights_subset = self.weights[:min(len(state_vector), len(self.weights))]
+        state_subset = state_vector[:len(weights_subset)]
+        
+        empowerment = np.dot(state_subset, weights_subset) + action_value
 
         # Normalize to [0, 1] range
         empowerment = 1.0 / (1.0 + np.exp(-empowerment))  # Sigmoid function
