@@ -129,7 +129,7 @@ cd local-repl-mcp
   ```
 
 # Once the server is installed in Claude Desktop, you can use the following tools,
-# This info is also available to Claude via the prompt at the end of the server.py and attachable by the + in the Desktop UI:
+# This info is also available to Claude via the prompts folder and attachable by the + in the Desktop UI:
 
 - `create_python_repl()` - Creates a new Python REPL and returns its ID
 - `run_python_in_repl(code, repl_id)` - Runs Python code in the specified REPL
