@@ -114,12 +114,19 @@ There are several powerful use cases for a local Python REPL integrated with Cla
 
 cd local-repl-mcp
 
-   ```bash
-   # Using uv (recommended)
-   uv .venv/bin/activate && uv pip install <required-packages>
-  # Some of these packages will take some time to install
-  # uv add numpy pandas matplotlib scipy scikit-learn tensorflow torch torchvision torchtext torchaudio seaborn sympy requests
-   ```
+  ```bash
+  # Using uv (recommended)
+  # uv .venv/bin/activate && uv pip install <required-packages>
+  # Some of these packages will take some time to install, I suggest you do this if they take too long to install:
+  # If you don't have uv installed, you can install it with:
+  # pip install uv
+  # Then if not made by the server activating via Claude you can create then activate the virtual environment with:
+  # uv venv --python 3.12 --seed
+  # Then you can activate the virtual environment with:
+  uv .venv/bin/activate
+  # And install the packages with:
+  uv add numpy pandas matplotlib scipy scikit-learn tensorflow torch torchvision torchtext torchaudio seaborn sympy requests networkx beautifulsoup4 jupyter fastapi
+  ```
 
 # Once the server is installed in Claude Desktop, you can use the following tools,
 # This info is also available to Claude via the prompt at the end of the server.py and attachable by the + in the Desktop UI:
