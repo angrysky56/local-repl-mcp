@@ -37,7 +37,7 @@ A locally-running Python REPL server that integrates with Claude Desktop through
 - **Simple & Secure**: Straightforward implementation with minimal dependencies
 
 - **New Additions**:
-    See Modular-Empowerment folder or just try the prompts!
+    See Modular-Empowerment-README.md or just try the prompts!
 
 # Potential Use Cases for LocalREPL
 
