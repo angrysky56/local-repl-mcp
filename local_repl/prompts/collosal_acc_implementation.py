@@ -10,7 +10,7 @@ def collosal_acc_implementation() -> str:
     return """
     # ColossalNet Adaptive Coordination Center Implementation
 
-    ## Phase 1: ACC Core Architecture (64 GB System)
+    ## Phase 1: ACC Core Architecture
 
     ### Step 1: Initialize High-Memory MEF Environment
     ```python
@@ -23,7 +23,7 @@ def collosal_acc_implementation() -> str:
     )
     init_result = initialize_modular_empowerment(repl_id=acc_repl)
 
-    print("🧠 ColossalNet ACC Implementation - 64 GB System Active")
+    print("🧠 ColossalNet ACC Implementation")
     ```
 
     ### Step 2: Implement Core ACC Architecture
@@ -65,14 +65,15 @@ def collosal_acc_implementation() -> str:
         Implementation of ColossalNet's Adaptive Coordination Center (ACC)
         Enhanced with MEF empowerment optimization capabilities
 
-        Memory allocation: 12 GB for ACC operations on 64 GB system
+        Memory allocation: 16+ GB for ACC operations on 64 GB system
         \"\"\"
 
         def __init__(self, mef_agents, system_memory_gb=64):
             self.agents = mef_agents
             self.system_memory_gb = system_memory_gb
-            self.available_memory_gb = system_memory_gb - 32  # After MCTS allocation
-            self.acc_memory_allocation = 12  # GB for ACC operations
+            self.available_memory_gb = system_memory_gb
+            self.acc_memory_allocation = 16  # Increase GB for ACC operations when needed
+            # self.acc_memory_allocation = min(self.available_memory_gb, self.acc_memory_allocation)
 
             # ColossalNet heterogeneous communication pathways
             self.communication_pathways = self._init_heterogeneous_pathways()
@@ -90,7 +91,6 @@ def collosal_acc_implementation() -> str:
         def _init_heterogeneous_pathways(self):
             \"\"\"
             ColossalNet-inspired diverse communication channels
-            Optimized for 64 GB system with MCTS integration
             \"\"\"
             total_pathway_memory = 8  # GB allocated for pathways
 
@@ -642,7 +642,7 @@ def collosal_acc_implementation() -> str:
             'research_title': 'ColossalNet Adaptive Coordination Center Implementation in MEF',
             'timestamp': datetime.now().isoformat(),
             'system_specs': {
-                'total_memory_gb': 64,
+                'total_memory_gb': 64, # Assuming 64 GB system RAM
                 'available_memory_gb': acc.available_memory_gb,
                 'acc_allocation_gb': acc.acc_memory_allocation,
                 'cpu_cores': 16,
@@ -727,7 +727,7 @@ def collosal_acc_implementation() -> str:
 
     ## Technical Specifications
 
-    - **System Memory**: 64 GB total, {acc.available_memory_gb}GB available after MCTS
+    - **System Memory**: 64 GB total, {acc.available_memory_gb}GB available for ACC
     - **ACC Allocation**: {acc.acc_memory_allocation}GB dedicated to coordination operations
     - **Agent Integration**: {len(acc.agents) if hasattr(acc.agents, '__len__') else 'Multiple'} persistent agents with empowerment tracking
     - **Communication Pathways**: 4 heterogeneous channels with adaptive selection
@@ -737,7 +737,7 @@ def collosal_acc_implementation() -> str:
     This implementation demonstrates:
     1. **Feasibility** of ColossalNet concepts in real-world systems
     2. **Enhancement** of confidence voting with empowerment optimization
-    3. **Scalability** potential for large multi-agent systems (64 GB capacity)
+    3. **Scalability** potential for large multi-agent systems with limited memory
     4. **Integration** possibilities with existing AI architectures
 
     ## Future Directions
@@ -749,7 +749,7 @@ def collosal_acc_implementation() -> str:
 
     ---
     *This research represents the first implementation of ColossalNet's Adaptive
-    Coordination Center concepts, validated on a 64 GB high-performance system
+    Coordination Center concepts, validated on a 64 GB system
     with persistent multi-agent intelligence.*
     \"\"\"
 
