@@ -1,160 +1,217 @@
-# Local REPL MCP Server
+# LocalREPL MCP Server
 
-A local Python REPL (Read-Eval-Print Loop) server for Claude Desktop, implemented using the Model Context Protocol (MCP).
-
-## Overview
-
-This MCP server provides a powerful Python environment that allows you to:
-
-- Run Python code directly within Claude
-- Maintain persistent state throughout your conversation
-- Create and manage multiple independent Python environments
-- Execute data analysis, visualizations, and computational tasks
+A locally-running Python REPL server that integrates with Claude Desktop through the Model Context Protocol (MCP).
 
 ## Features
 
-- **Multiple REPL Instances**: Create and manage separate Python environments
-- **State Persistence**: Variables and imports persist between code executions
-- **Comprehensive Prompt Templates**: Ready-to-use workflows for common tasks
-- **Enhanced Error Handling**: Clear error messages with traceback information
-- **Modular Empowerment Framework**: Optional integration with advanced agent capabilities
+- **Completely Local**: Run Python code directly on your machine without any remote dependencies
+- **State Persistence**: Maintain state between code executions (completely local)
+- **MCP Integration**: Fully compatible with Claude Desktop through the Model Context Protocol
+- **No API Keys**: No registration or signup required
+- **Privacy-Focused**: Your code never leaves your machine if you use local models
+- **Simple & Secure**: Straightforward implementation with minimal dependencies
+
+- **New Additions**:
+    See Modular-Empowerment-README.md
+
+# Potential Use Cases for LocalREPL
+
+There are several powerful use cases for a local Python REPL integrated with Claude:
+
+## 1. **Interactive Learning Environment**
+- Perfect for teaching programming concepts with immediate feedback
+- Step through algorithms with Claude explaining each part
+- Build understanding iteratively without switching between tools
+
+## 2. **Data Analysis Workflow**
+- Process and analyze data with state persistence
+- Incrementally build analysis pipelines with guidance from Claude
+- Visualize results and refine approach without context switching
+
+## 3. **Secure Code Experimentation**
+- Experiment with sensitive code or data that shouldn't leave your machine
+- Test financial algorithms, personal automation, or proprietary code
+- Avoid exposing intellectual property to third-party services
+
+## 4. **Incremental Development**
+- Build solutions step-by-step with Claude's guidance
+- Maintain context and state throughout development sessions
+- Refine code based on immediate feedback and results
+
+## 5. **Local AI Integration Testing**
+- Test integrations with local AI models
+- Process inputs and outputs for AI systems
+- Build preprocessing and postprocessing pipelines
+
+## 6. **Automated Documentation Generation**
+- Generate documentation from code inspection
+- Test and refine documentation examples
+- Create interactive tutorials with working code examples
+
+## 7. **Private API Testing**
+- Explore internal or sensitive APIs without exposing credentials
+- Build up complex API requests incrementally
+- Test authentication flows and data handling
+
+## 8. **Local System Automation**
+- Control and interact with local services securely
+- Build automation scripts that don't require internet access
+- Test system modifications in a controlled environment
+
+## 9. **Continuous Computational Context**
+- Maintain a persistent computational environment between conversations
+- Build on previous calculations without starting over
+- Create complex multi-step analyses with Claude's guidance
+
+## 10. **Educational Demonstrations**
+- Create interactive coding tutorials
+- Demonstrate concepts with working code examples
+- Allow students to experiment safely within Claude
+
+![alt text](image.png)
 
 ## Installation
 
 ### Prerequisites
 
-- Claude Desktop App (latest version)
-- Python 3.10+ with uv package manager
+- Python 3.10 or higher
+- [Claude Desktop](https://claude.ai/download)
 
 ### Setup
 
-1. Clone this repository:
+1. Clone this repository
    ```bash
    git clone https://github.com/angrysky56/local-repl-mcp.git
-   cd local-repl-mcp
    ```
 
-2. Create a virtual environment using uv:
-   ```bash
-   uv venv --python 3.12
-   source .venv/bin/activate
-   ```
+## Quickstart:
 
-3. Install required dependencies:
-   ```bash
-   uv add mcp
-   ```
+## You can just copy this into your mcp config json edit the path to your own, and should be good to go:
 
-4. Create a copy of the example MCP configuration file:
-   ```bash
-   cp example_mcp_config.json ~/.config/claude-app/mcp_config.json
-   ```
-
-5. Edit the config file to point to your local repository path:
-   ```json
-   {
-     "mcpServers": {
-       "LocalREPL": {
-         "command": "uv",
-         "args": [
-           "--directory",
-           "/path/to/local-repl-mcp/local_repl",
-           "run",
-           "server.py"
-         ]
-       }
-     }
-   }
-   ```
-
-   Note: Replace "/path/to/local-repl-mcp" with your actual repository path.
-
-6. Verify the server is working:
-   ```bash
-   cd /path/to/local-repl-mcp
-   . .venv/bin/activate
-   python -m local_repl.server
-   ```
-
-   You should see the server start without errors, and the loaded prompts will be displayed.
+```json
+{
+  "mcp_servers": {
+    "LocalREPL": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl",
+        "run",
+        "server.py"
+      ]
+    }
+  }
+}
+```
+![alt text](image-1.png)
 
 ## Usage
 
-Once installed, you can use the server directly in Claude Desktop:
+# Optional: Install additional packages you want to use in your REPL:
 
-1. Start Claude Desktop
-2. Type `/LocalREPL` to access available prompts
-3. Select a prompt to begin working with the REPL
+cd local-repl-mcp
 
-### Basic REPL Commands
+   ```bash
+   uv add numpy pandas matplotlib
+   ```
+
+# Once the server is installed in Claude Desktop, you can use the following tools,
+# This info is also available to Claude via the prompt at the end of the server.py and attachable by the + in the Desktop UI:
+
+- `create_python_repl()` - Creates a new Python REPL and returns its ID
+- `run_python_in_repl(code, repl_id)` - Runs Python code in the specified REPL
+- `list_active_repls()` - Lists all active REPL instances
+- `get_repl_info(repl_id)` - Shows information about a specific REPL
+- `delete_repl(repl_id)` - Deletes a REPL instance
+
+### Example Workflow
 
 ```python
-# Create a new REPL
+# First create a new REPL
 repl_id = create_python_repl()
 
-# Run Python code in the REPL
-run_python_in_repl(
+# Run some code
+result = run_python_in_repl(
   code="x = 42\nprint(f'The answer is {x}')",
   repl_id=repl_id
 )
 
-# Run more code in the same REPL (state is preserved)
-run_python_in_repl(
+# Run more code in the same REPL (with state preserved)
+more_results = run_python_in_repl(
   code="import math\nprint(f'The square root of {x} is {math.sqrt(x)}')",
   repl_id=repl_id
 )
 
-# List all active REPLs
-list_active_repls()
+# Check what variables are available in the environment
+environment_info = get_repl_info(repl_id)
 
-# Get information about a specific REPL
-get_repl_info(repl_id)
-
-# Delete a REPL when finished
+# When done, you can delete the REPL
 delete_repl(repl_id)
 ```
 
-## Available Prompts
+## Advantages
 
-The server includes several prompt templates for common workflows:
+- **No Registration**: No need to sign up or request API tokens
+- **Full Privacy**: All code execution happens on your local machine
+- **No Usage Limits**: Not restricted by API rate limits or quotas
+- **Complete Control**: Modify and extend functionality as needed
+- **Offline Usage**: Works without an internet connection
+- **Free & Open Source**: No associated costs or usage fees
 
-- **Python REPL**: Basic Python REPL usage
-- **Data Analysis**: Complete data analysis workflow
-- **Test Prompt**: Simple test for verifying prompt functionality
-- **Modular Empowerment**: Advanced agent-based system with persistence
-- **REPL Integration Example**: Example of integrating with external systems
-- **MEF Integration Example**: Modular Empowerment Framework integration
 
-## Folder Structure
+## Development
 
+To run the server during development:
+
+```bash
+mcp dev server.py
 ```
-local-repl-mcp/
-├── example_mcp_config.json   # Example configuration for Claude Desktop
-├── local_repl/               # MCP server implementation
-│   ├── prompts/              # Prompt templates
-│   │   ├── __init__.py       # Prompt loader
-│   │   ├── python_repl.py    # Basic REPL prompt
-│   │   ├── data_analysis.py  # Data analysis prompt
-│   │   └── ...               # Other prompt templates
-│   ├── server.py             # Main MCP server implementation
-│   └── ...                   # Other server components
-├── modular_empowerment_framework/ # Optional MEF integration
-└── README.md                 # This file
+
+## Try this stuff if you need to, untested:
+
+2. Create a virtual environment:
+   ```bash
+   # Using uv (recommended)
+   uv venv --python 3.12 --seed
+
+   # Or using standard venv
+   python -m venv .venv
+   ```
+
+3. Activate the virtual environment:
+   ```bash
+   # On Linux/macOS
+   . .venv/bin/activate
+
+   # On Windows
+   .venv\Scripts\activate
+   ```
+
+4. cd local-repl-mcp
+   Install the package:
+   ```bash
+   # Using uv
+   uv pip install -e .
+
+   # Using pip
+   pip install -e .
+   ```
+
+## No idea if this works:
+
+Run the following command to generate a configuration file for Claude Desktop:
+
+```bash
+mcp install server.py
 ```
 
 ## Troubleshooting
 
-If you encounter issues with the server:
-
-1. Check that the path in your `mcp_config.json` is correct
-2. Ensure the server's virtual environment is properly activated
-3. Check Claude Desktop logs for any error messages
-4. Restart Claude Desktop after making configuration changes
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
+- **EPIPE errors**: If you see EPIPE errors, restart the Claude Desktop application
+- **Missing packages**: If your code requires specific packages, install them in the same virtual environment
+- **Connection issues**: Ensure the server path in your configuration is correct
+- **MCP tools not appearing**: Check your Claude Desktop configuration and restart the application
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+[MIT](https://github.com/angrysky56/local-repl-mcp/blob/master/LICENSE)
