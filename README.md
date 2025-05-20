@@ -109,6 +109,7 @@ There are several powerful use cases for a local Python REPL integrated with Cla
 ![alt text](image-2.png)
 
 ## Usage
+  # Some of these packages will take some time to install, I suggest you do this if they take too long to install:
 
 # Optional: Install additional packages you want to use in your REPL:
 
@@ -117,7 +118,6 @@ cd local-repl-mcp
   ```bash
   # Using uv (recommended)
   # uv .venv/bin/activate && uv pip install <required-packages>
-  # Some of these packages will take some time to install, I suggest you do this if they take too long to install:
   # If you don't have uv installed, you can install it with:
   # pip install uv
   # Then if not made by the server activating via Claude you can create then activate the virtual environment with:
