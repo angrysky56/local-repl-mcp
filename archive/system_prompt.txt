@@ -1,0 +1,72 @@
+## REPL System Usage Instructions
+
+This system provides an interactive Python REPL environment for data analysis, visualization, and computational exploration. Follow these guidelines for optimal usage:
+
+### Environment Organization
+
+1. ALL OUTPUT FILES should be saved to the `/output` directory:
+   - Data visualization images
+   - Generated Python scripts
+   - Analysis results
+   - Generated artifacts
+
+2. Code Organization:
+   - Agent scripts should be stored in the `/repl_agent_library`
+   - Reusable Python scripts should be stored in the `/repl_script_library`
+   - Use consistent naming conventions: `purpose_description.py`
+
+### Package Management
+
+To install packages, use this command pattern:
+```
+. .venv/bin/activate && uv pip install <required-packages>
+```
+
+For example:
+```
+. .venv/bin/activate && uv pip install scipy pandas matplotlib seaborn
+```
+
+### Workflow Best Practices
+
+1. Always create a new REPL instance for each analysis:
+   ```python
+   repl_id = create_python_repl()
+   ```
+
+2. Store the REPL ID for subsequent use:
+   ```python
+   # Use the repl_id for running code
+   run_python_in_repl(code="import numpy as np", repl_id=repl_id)
+   ```
+
+3. Clean up when finished:
+   ```python
+   delete_repl(repl_id)
+   ```
+
+4. For long scripts, save them to `/repl_script_library` and execute them from there
+
+5. For visualizations:
+   - Save to the `/output` directory
+   - Use absolute paths to prevent errors
+   - Include timestamp in filenames to avoid overwriting
+
+6. For data processing:
+   - Always handle potential errors in data loading
+   - Use try/except blocks for file operations
+   - Include input validation
+
+### Wolfram Alpha Integration
+
+For complex mathematical computations:
+```python
+query_wolfram_alpha(query="solve x^2 + 2x + 1 = 0")
+```
+
+### React Visualizations
+
+For interactive visualizations:
+1. Create components with clear naming
+2. Use the artifacts system to render visualizations
+3. Make sure components have appropriate error handling

@@ -4,7 +4,7 @@ Modular Empowerment Framework prompt template.
 This module provides the template for the Modular Empowerment Framework workflow prompt.
 """
 
-def modular_empowerment_workflow() -> str:
+def full_empowerment_workflow() -> str:
     """
     A prompt template showing how to use the Modular Empowerment Framework with Persistent Agents.
     """
@@ -377,7 +377,7 @@ def modular_empowerment_workflow() -> str:
 
     class ProjectManagerAgent(AdvancedAgent):
         \"\"\"Agent specialized in managing projects and coordinating tasks\"\"\"
-        
+
         def __init__(self, agent_id, capabilities=None, initial_energy=1.0):
             if capabilities is None:
                 capabilities = {
@@ -388,16 +388,16 @@ def modular_empowerment_workflow() -> str:
                     'tracking': 0.8
                 }
             super().__init__(agent_id, "project_manager", capabilities, initial_energy)
-            
+
             # Project manager specific properties
             self.projects = []
             self.assigned_tasks = {}  # agent_id -> [tasks]
             self.project_timelines = {}  # project_id -> timeline
-        
+
         def create_project(self, name, description, deadline=None):
             \"\"\"Create a new project\"\"\"
             project_id = f"proj_{len(self.projects) + 1}"
-            
+
             project = {
                 'id': project_id,
                 'name': name,
@@ -408,20 +408,20 @@ def modular_empowerment_workflow() -> str:
                 'tasks': [],
                 'team': []
             }
-            
+
             self.projects.append(project)
             return project_id
-        
+
         def add_project_task(self, project_id, task_description, assigned_to=None, due_date=None):
             \"\"\"Add a task to a project\"\"\"
             # Find the project
             project = next((p for p in self.projects if p['id'] == project_id), None)
-            
+
             if not project:
                 return False
-            
+
             task_id = f"task_{len(project['tasks']) + 1}"
-            
+
             task = {
                 'id': task_id,
                 'description': task_description,
@@ -430,9 +430,9 @@ def modular_empowerment_workflow() -> str:
                 'assigned_to': assigned_to,
                 'due_date': due_date
             }
-            
+
             project['tasks'].append(task)
-            
+
             # Track the assignment
             if assigned_to:
                 if assigned_to not in self.assigned_tasks:
@@ -442,27 +442,27 @@ def modular_empowerment_workflow() -> str:
                     'task_id': task_id,
                     'description': task_description
                 })
-                
+
             return task_id
-        
+
         def update_task_status(self, project_id, task_id, status):
             \"\"\"Update a task's status\"\"\"
             # Find the project
             project = next((p for p in self.projects if p['id'] == project_id), None)
-            
+
             if not project:
                 return False
-                
+
             # Find the task
             task = next((t for t in project['tasks'] if t['id'] == task_id), None)
-            
+
             if not task:
                 return False
-                
+
             # Update status
             task['status'] = status
             task['updated'] = datetime.now().isoformat()
-            
+
             return True
     ```
 

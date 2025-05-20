@@ -214,6 +214,12 @@ if current_dir not in sys.path:
 # Import the prompts package
 from prompts import prompts
 
+# Print loaded prompts for debugging
+print("\n=== Loaded Prompts ===")
+for prompt_name in prompts.keys():
+    print(f"- {prompt_name}")
+print("======================\n")
+
 # Register prompts with MCP using the decorator
 for prompt_name, prompt_func in prompts.items():
     # Apply the decorator to each prompt function

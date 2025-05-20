@@ -4,7 +4,7 @@ Python REPL prompt template.
 This module provides the template for the Python REPL workflow prompt.
 """
 
-def python_repl_workflow() -> str:
+def basic_python_repl_workflow() -> str:
     """
     A prompt template showing how to use the Python REPL.
     """

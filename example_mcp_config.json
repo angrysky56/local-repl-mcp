@@ -1,10 +1,10 @@
 {
-  "mcp_servers": {
+  "mcpServers": {
     "LocalREPL": {
       "command": "uv",
       "args": [
         "--directory",
-        "/path/to/local-repl-mcp/local_repl",
+        "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl",
         "run",
         "server.py"
       ]
