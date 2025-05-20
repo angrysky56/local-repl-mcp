@@ -63,18 +63,18 @@ def basic_system_check() -> str:
 
     ## Available Prompts
 
-    The following prompts should be available from the LocalREPL server:
+    The following prompts should be available from LocalREPL: local_repl/prompts
 
-    1. **Python REPL** (`python_repl_workflow`): Basic Python REPL usage guide
+    1. **Python REPL** (`basic_python_repl`): Basic Python REPL usage guide
     2. **Test Prompt** (`test_prompt_workflow`): Simple test prompt
-    3. **MEF Integration** (`mef_integration_workflow`): Modular Empowerment Framework integration guide
-    4. **Modular Empowerment** (`modular_empowerment_workflow`): Advanced agent-based framework with persistence
+    3. **MEF Integration** (`empowered_agent_basic_setup`): Modular Empowerment Framework integration guide
+    4. **Modular Empowerment** (`full_empowerment_workflow`): Advanced agent-based framework with persistence
     5. **Data Analysis** (`data_analysis_workflow`): Comprehensive data analysis and visualization workflow
-    6. **Verification** (`verification_workflow`): This verification prompt
+    6. **Verification** (`basic_system_check.py`): This verification prompt
 
     ## Configuration Verification
 
-    If all the prompts listed above are available, it means your MCP configuration is correct. You can access all these prompts by typing `/LocalREPL` in Claude Desktop.
+    If all the prompts listed above are available, it means your MCP configuration is correct. You can access all these prompts by selecting + in the bottom left of the chat input then select `LocalREPL`.
 
     ## Troubleshooting
 

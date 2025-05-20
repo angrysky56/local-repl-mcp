@@ -103,7 +103,10 @@ There are several powerful use cases for a local Python REPL integrated with Cla
   }
 }
 ```
+
 ![alt text](image-1.png)
+
+![alt text](image-2.png)
 
 ## Usage
 
@@ -112,7 +115,10 @@ There are several powerful use cases for a local Python REPL integrated with Cla
 cd local-repl-mcp
 
    ```bash
-   uv add numpy pandas matplotlib
+   # Using uv (recommended)
+   uv .venv/bin/activate && uv pip install <required-packages>
+  # Some of these packages will take some time to install
+  # uv add numpy pandas matplotlib scipy scikit-learn tensorflow torch torchvision torchtext torchaudio seaborn sympy requests
    ```
 
 # Once the server is installed in Claude Desktop, you can use the following tools,

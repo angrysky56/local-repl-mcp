@@ -4,7 +4,7 @@ Local REPL Agent System.
 This module provides the template for the Modular Empowerment Framework workflow prompt.
 """
 
-def repl_agent_system() -> str:
+def repl_agent_system_prompt() -> str:
     """
     Prompt template showing AI how to use the REPL Agent System.
     """
