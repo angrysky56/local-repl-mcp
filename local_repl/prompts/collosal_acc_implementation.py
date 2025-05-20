@@ -587,7 +587,7 @@ def collosal_acc_implementation() -> str:
 
     # Test 4: Memory allocation and performance
     def test_memory_performance():
-        \"\"\"Test ACC memory allocation and performance on 64 GB system\"\"\"
+        \"\"\"Test ACC memory allocation and performance\"\"\"
 
         print("\\n💾 Testing Memory Performance...")
 
