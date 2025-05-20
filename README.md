@@ -16,7 +16,7 @@ A locally-running Python REPL server that integrates with Claude Desktop through
 - **Templates**: Data analysis, research, multi-agent coordination workflows
 
 ### **3. Strategic Capability Enhancement**
-- **Purpose**: Systematic enhancement following your experimental prompt methodology
+- **Purpose**: Systematic enhancement of system capabilities
 - **Framework**: Phase 1 (Planning) → Phase 2 (Execution) → Phase 3 (Adaptation)
 - **Implementation**: Sample agent communication and performance monitoring systems
 
