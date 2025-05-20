@@ -28,7 +28,7 @@ A locally-running Python REPL server that integrates with Claude Desktop through
 - **Evolution Database** tracking agent learning
 - **Multi-REPL Coordination** for parallel processing
 
-
+### **5. Other Advantages**
 - **Completely Local**: Run Python code directly on your machine without any remote dependencies
 - **State Persistence**: Maintain state between code executions (completely local)
 - **MCP Integration**: Fully compatible with Claude Desktop through the Model Context Protocol
