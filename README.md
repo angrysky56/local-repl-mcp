@@ -3,6 +3,31 @@
 A locally-running Python REPL server that integrates with Claude Desktop through the Model Context Protocol (MCP).
 
 ## Features
+- **Local REPL**: Runs a Python REPL server locally
+
+### **1. System Discovery Workflow**
+- **Purpose**: Methodical exploration of the full system capabilities
+- **Approach**: Phase-by-phase discovery with comprehensive documentation
+- **Output**: Complete system mapping and enhancement opportunities
+
+### **2. Advanced Workflow Orchestration**
+- **Purpose**: Complex multi-stage workflows with dependency management
+- **Features**: Task execution engine, error handling, performance monitoring
+- **Templates**: Data analysis, research, multi-agent coordination workflows
+
+### **3. Strategic Capability Enhancement**
+- **Purpose**: Systematic enhancement following your experimental prompt methodology
+- **Framework**: Phase 1 (Planning) → Phase 2 (Execution) → Phase 3 (Adaptation)
+- **Implementation**: Sample agent communication and performance monitoring systems
+
+### **4. Agent Communication and Performance Monitoring
+- **Persistent Agent Intelligence** with JSON state storage
+- **Empowerment Optimization Framework** with energy tracking
+- **Advanced Memory Systems** with categorization and tagging
+- **Workflow Orchestration** capabilities
+- **Evolution Database** tracking agent learning
+- **Multi-REPL Coordination** for parallel processing
+
 
 - **Completely Local**: Run Python code directly on your machine without any remote dependencies
 - **State Persistence**: Maintain state between code executions (completely local)
@@ -12,7 +37,7 @@ A locally-running Python REPL server that integrates with Claude Desktop through
 - **Simple & Secure**: Straightforward implementation with minimal dependencies
 
 - **New Additions**:
-    See Modular-Empowerment-README.md
+    See Modular-Empowerment folder or just try the prompts!
 
 # Potential Use Cases for LocalREPL
 
@@ -129,7 +154,7 @@ cd local-repl-mcp
   ```
 
 # Once the server is installed in Claude Desktop, you can use the following tools,
-# This info is also available to Claude via the prompts folder and attachable by the + in the Desktop UI:
+# This info and much more is also available to Claude via the prompts folder and attachable by the + in the Desktop UI or /LocalREPL in others:
 
 - `create_python_repl()` - Creates a new Python REPL and returns its ID
 - `run_python_in_repl(code, repl_id)` - Runs Python code in the specified REPL
@@ -161,16 +186,6 @@ environment_info = get_repl_info(repl_id)
 # When done, you can delete the REPL
 delete_repl(repl_id)
 ```
-
-## Advantages
-
-- **No Registration**: No need to sign up or request API tokens
-- **Full Privacy**: All code execution happens on your local machine
-- **No Usage Limits**: Not restricted by API rate limits or quotas
-- **Complete Control**: Modify and extend functionality as needed
-- **Offline Usage**: Works without an internet connection
-- **Free & Open Source**: No associated costs or usage fees
-
 
 ## Development
 
