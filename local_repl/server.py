@@ -214,11 +214,11 @@ if current_dir not in sys.path:
 # Import the prompts package
 from prompts import prompts
 
-# Print loaded prompts for debugging
-print("\n=== Loaded Prompts ===")
+# Print loaded prompts for debugging (to stderr to avoid corrupting JSONRPC on stdout)
+print("\n=== Loaded Prompts ===", file=sys.stderr)
 for prompt_name in prompts.keys():
-    print(f"- {prompt_name}")
-print("======================\n")
+    print(f"- {prompt_name}", file=sys.stderr)
+print("======================\n", file=sys.stderr)
 
 # Register prompts with MCP using the decorator
 for prompt_name, prompt_func in prompts.items():
