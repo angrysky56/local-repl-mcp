@@ -1,3 +1,5 @@
+import os
+
 """
 Modular Empowerment Framework (MEF) Integration Example
 
@@ -14,7 +16,7 @@ The MEF provides advanced tools for:
 Prerequisites:
 - The MEF must be installed in your environment
 - You need to know the path to the MEF directory
-- Current framework location: /home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl/modular_empowerment_framework
+- Current framework location: /absolute/path/to/local-repl-mcp/local_repl/modular_empowerment_framework
 """
 
 def empowered_agent_basic_setup() -> str:
@@ -22,6 +24,9 @@ def empowered_agent_basic_setup() -> str:
     A prompt template for Modular Empowerment Framework integration.
     Updated based on actual testing results.
     """
+    # Calculate relative path to local_repl directory
+    repl_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
     return """
     # Modular Empowerment Framework Integration
 
@@ -40,7 +45,7 @@ def empowered_agent_basic_setup() -> str:
 
     ```python
     # Set up the framework (UPDATED PATH!)
-    setup_result = setup_modular_empowerment(path="/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl/modular_empowerment_framework")
+    setup_result = setup_modular_empowerment(path="/absolute/path/to/local-repl-mcp/local_repl/modular_empowerment_framework")
     print(setup_result)
     ```
 

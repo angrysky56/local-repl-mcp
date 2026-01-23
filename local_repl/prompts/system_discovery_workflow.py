@@ -1,3 +1,5 @@
+import os
+
 """
 System Discovery and Enhancement Prompt
 
@@ -8,6 +10,10 @@ and collaborative documentation of findings.
 """
 
 def system_discovery_workflow() -> str:
+    # Calculate relative path to local_repl directory
+    # .../local_repl/prompts/system_discovery_workflow.py -> .../local_repl
+    repl_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
     return """
     # System Discovery and Enhancement Protocol
 
@@ -20,7 +26,7 @@ def system_discovery_workflow() -> str:
 
     # Initialize with MEF if available
     try:
-        setup_result = setup_modular_empowerment(path="/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl/modular_empowerment_framework")
+        setup_result = setup_modular_empowerment(path="/absolute/path/to/local-repl-mcp/local_repl/modular_empowerment_framework")
         init_result = initialize_modular_empowerment(repl_id=discovery_repl)
         print("✅ MEF Integration Active")
     except Exception as e:
@@ -34,7 +40,7 @@ def system_discovery_workflow() -> str:
     from pathlib import Path
 
     # Map the system structure
-    base_path = "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl"
+    base_path = "/absolute/path/to/local-repl-mcp/local_repl"
 
     def explore_directory(path, max_depth=3, current_depth=0):
         \"\"\"Recursively explore directory structure\"\"\"
@@ -105,7 +111,7 @@ def system_discovery_workflow() -> str:
     from datetime import datetime
 
     # Check for existing agent data
-    agent_data_dir = "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl/agent_data"
+    agent_data_dir = "/absolute/path/to/local-repl-mcp/local_repl/agent_data"
 
     print("=== Agent System Analysis ===")
     if os.path.exists(agent_data_dir):
@@ -155,7 +161,7 @@ def system_discovery_workflow() -> str:
     print("=== Storage Systems Analysis ===")
 
     # Check for SQLite databases
-    base_path = "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl"
+    base_path = "/absolute/path/to/local-repl-mcp/local_repl"
 
     for root, dirs, files in os.walk(base_path):
         for file in files:
@@ -266,7 +272,7 @@ def system_discovery_workflow() -> str:
     import os
     import json
 
-    base_path = "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl"
+    base_path = "/absolute/path/to/local-repl-mcp/local_repl"
 
     # Look for configuration files
     config_files = []
@@ -401,7 +407,7 @@ def system_discovery_workflow() -> str:
     }
 
     # Save documentation
-    doc_path = "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl/output/system_discovery_report.json"
+    doc_path = "/absolute/path/to/local-repl-mcp/local_repl/output/system_discovery_report.json"
     with open(doc_path, 'w') as f:
         json.dump(system_map, f, indent=2)
 
@@ -455,7 +461,7 @@ def system_discovery_workflow() -> str:
     5. Add performance profiling tools
     \"\"\"
 
-    md_path = "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl/output/discovery_summary.md"
+    md_path = "/absolute/path/to/local-repl-mcp/local_repl/output/discovery_summary.md"
     with open(md_path, 'w') as f:
         f.write(md_content)
 

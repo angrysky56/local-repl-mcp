@@ -1,3 +1,5 @@
+import os
+
 """
 Advanced Workflow Orchestration Prompt
 
@@ -9,6 +11,9 @@ that leverage the full power of the local REPL agent system.
 """
 
 def advanced_workflow_orchestration() -> str:
+    # Calculate relative path to local_repl directory
+    repl_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
     return """
     # Advanced Workflow Orchestration System
 
@@ -820,4 +825,4 @@ def advanced_workflow_orchestration() -> str:
     This system transforms the REPL environment into a powerful workflow orchestration
     platform capable of handling enterprise-level complexity while maintaining the
     flexibility and interactivity of the REPL interface.
-    """
+    """.replace("/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl", repl_path).replace("/home/ty/Repositories/ai_workspace/local-repl-mcp/modular_empowerment_framework", os.path.join(repl_path, "modular_empowerment_framework"))

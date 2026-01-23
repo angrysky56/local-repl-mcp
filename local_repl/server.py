@@ -49,26 +49,40 @@ class PythonREPL:
         try:
             # Redirect stdout and stderr to our capture objects
             with redirect_stdout(stdout_capture), redirect_stderr(stderr_capture):
-                # For multi-line code blocks or statements, use exec
-                # For single expressions where we want a return value, use eval
+                import ast
 
-                # Check if we're dealing with a single expression or a code block
-                code_stripped = code.strip()
+                # Parse the code into an AST
+                try:
+                    tree = ast.parse(code)
+                except SyntaxError:
+                    # If it's a syntax error, run it to get the standard traceback
+                    exec(code, self.namespace, self.namespace)
+                    return stdout_capture.getvalue(), stderr_capture.getvalue(), None
 
-                # First try using exec for all code (safer for multi-line code)
-                # Use a single namespace for both globals and locals to support recursive functions
-                exec(code, self.namespace, self.namespace)
+                # Check if the last node is an expression
+                if tree.body and isinstance(tree.body[-1], ast.Expr):
+                    # It's an expression! We want to capture its value.
 
-                # If it's potentially a simple expression, also try to evaluate it to get a return value
-                # Only do this for single-line code without assignments or imports
-                if ('\n' not in code_stripped and
-                    '=' not in code_stripped and
-                    not code_stripped.startswith(('import ', 'from ', 'def ', 'class ', 'if ', 'for ', 'while '))):
-                    try:
-                        result = eval(code_stripped, self.namespace, self.namespace)
-                    except:
-                        # Ignore errors in eval since we already executed with exec
-                        pass
+                    # Split into:
+                    # 1. Everything EXCEPT the last node (run with exec)
+                    # 2. The last node (run with eval)
+
+                    last_node = tree.body[-1]
+                    body_nodes = tree.body[:-1]
+
+                    # Execute previous statements if any
+                    if body_nodes:
+                        module = ast.Module(body=body_nodes, type_ignores=[])
+                        exec(compile(module, filename="<string>", mode="exec"), self.namespace, self.namespace)
+
+                    # Evaluate the last expression
+                    expr = ast.Expression(body=last_node.value)
+                    result = eval(compile(expr, filename="<string>", mode="eval"), self.namespace, self.namespace)
+                else:
+                    # Last node is not an expression (e.g. assignment, function def)
+                    # Just exec the whole thing
+                    exec(code, self.namespace, self.namespace)
+
         except Exception:
             # Catch any exceptions and add to stderr
             stderr_capture.write(traceback.format_exc())
@@ -108,7 +122,7 @@ def create_python_repl() -> str:
 @mcp.tool()
 def run_python_in_repl(code: str, repl_id: str) -> str:
     """
-    Execute Python code in a REPL.
+    Execute Python code in a REPL. (Create new or use an existing REPL)
 
     Args:
         code: Python code to execute
@@ -225,47 +239,7 @@ for prompt_name, prompt_func in prompts.items():
     # Apply the decorator to each prompt function
     mcp.prompt()(prompt_func)
 
-@mcp.tool()
-def setup_modular_empowerment(path: str = "") -> str:
-    """
-    Set up the Modular Empowerment Framework with a user-specified path.
 
-    Args:
-        path: Full path to the modular_empowerment_framework directory
-              If empty, will look in the current directory
-
-    Returns:
-        str: Confirmation message with setup status
-    """
-    global mef_path_store
-
-    if not path:
-        # If no path provided, try the current directory
-        path = os.path.join(os.getcwd(), "modular_empowerment_framework")
-        if not os.path.exists(path):
-            return (
-                "❌ No path provided and couldn't find modular_empowerment_framework in the current directory.\n"
-                "Please provide the full path to the modular_empowerment_framework directory."
-            )
-
-    # Check if the path exists
-    if not os.path.exists(path):
-        return f"❌ The specified path does not exist: {path}"
-
-    # Check if it looks like a proper modular_empowerment_framework directory
-    # We'll just check for a src directory as a basic validation
-    src_dir = os.path.join(path, "src")
-    if not os.path.exists(src_dir):
-        return (
-            f"⚠️  Warning: The path {path} exists but doesn't look like a modular_empowerment_framework directory.\n"
-            "It should contain a 'src' directory with the framework code.\n"
-            "You may need to create this structure or specify a different path."
-        )
-
-    # Store the path for future use
-    mef_path_store = path
-
-    return f"✅ Successfully configured modular_empowerment_framework at: {path}"
 
 
 @mcp.tool()
@@ -279,19 +253,6 @@ def initialize_modular_empowerment(repl_id: str) -> str:
     Returns:
         str: Result of the initialization
     """
-    global mef_path_store
-
-    # Check if the REPL exists
-    if repl_id not in repl_instances:
-        return f"❌ REPL with ID {repl_id} not found. Please create a new REPL first."
-
-    # Check if the MEF path is set
-    if not mef_path_store:
-        return (
-            "❌ The modular_empowerment_framework path is not set.\n"
-            "Please run setup_modular_empowerment(path) first to configure the path."
-        )
-
     # Create the initialization code
     init_code = f"""
 import sys
@@ -300,14 +261,13 @@ import random
 import numpy as np
 from typing import Dict, List, Any
 
-# Add the framework directory to Python path
-mef_path = "{mef_path_store}"
-sys.path.append(mef_path)
-print(f"Added framework path to Python path: {{mef_path}}")
-
 try:
-    # Import the integration module
-    from src.integration.integration import ModularEmpowermentIntegration
+    # Try importing from the package structure
+    try:
+        from local_repl.modular_empowerment_framework.src.integration.integration import ModularEmpowermentIntegration
+    except ImportError:
+        # Fallback for direct execution
+        from modular_empowerment_framework.src.integration.integration import ModularEmpowermentIntegration
 
     # Configure the MEF
     config = {{

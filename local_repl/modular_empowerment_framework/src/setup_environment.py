@@ -32,8 +32,9 @@ def setup_environment(base_path=None):
     """
     # Get the base path
     if base_path is None:
-        # Default path
-        default_path = "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl"
+        # Default path derived from script location
+        # .../local_repl/modular_empowerment_framework/src/setup_environment.py -> .../local_repl
+        default_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
         # Ask user to confirm the path
         print(f"Is the following local REPL directory correct?\n{default_path}")

@@ -4,9 +4,10 @@
       "command": "uv",
       "args": [
         "--directory",
-        "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl",
+        "/absolute/path/to/local-repl-mcp",
         "run",
-        "server.py"
+        "-m",
+        "local_repl"
       ]
     }
   }

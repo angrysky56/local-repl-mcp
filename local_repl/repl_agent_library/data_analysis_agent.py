@@ -45,7 +45,7 @@ class DataAnalysisAgent:
         
         # Set default output directory if not provided
         if output_dir is None:
-            base_dir = "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl"
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             self.output_dir = os.path.join(base_dir, "output")
         else:
             self.output_dir = output_dir

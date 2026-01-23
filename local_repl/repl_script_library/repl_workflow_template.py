@@ -20,7 +20,7 @@ def main():
     # Step 1: Confirm local REPL directory
     print("Checking REPL environment...")
     # Replace with your base directory or use the default
-    base_dir = "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl"
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     
     response = input(f"Is this REPL directory correct? {base_dir} (y/n): ")
     if response.lower() != 'y':

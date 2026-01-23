@@ -1,3 +1,5 @@
+import os
+
 """
 ColossalNet Adaptive Coordination Center (ACC) Implementation
     Research goal: First real-world implementation of ColossalNet concepts
@@ -7,6 +9,9 @@ the MEF system architecture for advanced multi-agent coordination research.
 """
 
 def collosal_acc_implementation() -> str:
+    # Calculate relative path to local_repl directory
+    repl_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
     return """
     # ColossalNet Adaptive Coordination Center Implementation
 
@@ -19,7 +24,7 @@ def collosal_acc_implementation() -> str:
 
     # Setup MEF with ColossalNet integration
     setup_result = setup_modular_empowerment(
-        path="/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl/modular_empowerment_framework"
+        path="/absolute/path/to/local-repl-mcp/local_repl/modular_empowerment_framework"
     )
     init_result = initialize_modular_empowerment(repl_id=acc_repl)
 

@@ -1,3 +1,5 @@
+import os
+
 """
 Modular Empowerment Framework prompt template.
 
@@ -8,6 +10,9 @@ def full_empowerment_workflow() -> str:
     """
     A prompt template showing how to use the Modular Empowerment Framework with Persistent Agents.
     """
+    # Calculate relative path to local_repl directory
+    repl_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
     return """
     # Enhanced Modular Empowerment Framework with Persistent Agents
 
@@ -32,7 +37,7 @@ def full_empowerment_workflow() -> str:
     ```python
     # Set up the framework (ask the user if the following path is correct- you only need to do this once per session)
     # You need to provide the path to where the modular_empowerment_framework is located
-    setup_result = setup_modular_empowerment(path="/home/ty/Repositories/ai_workspace/local-repl-mcp/modular_empowerment_framework")
+    setup_result = setup_modular_empowerment(path="/absolute/path/to/local-repl-mcp/modular_empowerment_framework")
     print(setup_result)
     ```
 
@@ -1048,7 +1053,7 @@ def full_empowerment_workflow() -> str:
 
     ```python
     # Set up the framework
-    setup_result = setup_modular_empowerment(path="/home/ty/Repositories/ai_workspace/local-repl-mcp/modular_empowerment_framework")
+    setup_result = setup_modular_empowerment(path="/absolute/path/to/local-repl-mcp/modular_empowerment_framework")
 
     # Create a REPL and initialize MEF
     repl_id = create_python_repl()

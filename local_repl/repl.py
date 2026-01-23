@@ -45,26 +45,40 @@ class PythonREPL:
         try:
             # Redirect stdout and stderr to our capture objects
             with redirect_stdout(stdout_capture), redirect_stderr(stderr_capture):
-                # For multi-line code blocks or statements, use exec
-                # For single expressions where we want a return value, use eval
+                import ast
                 
-                # Check if we're dealing with a single expression or a code block
-                code_stripped = code.strip()
-                
-                # First try using exec for all code (safer for multi-line code)
-                # Use a single namespace for both globals and locals to support recursive functions
-                exec(code, self.namespace, self.namespace)
-                
-                # If it's potentially a simple expression, also try to evaluate it to get a return value
-                # Only do this for single-line code without assignments or imports
-                if ('\n' not in code_stripped and 
-                    '=' not in code_stripped and 
-                    not code_stripped.startswith(('import ', 'from ', 'def ', 'class ', 'if ', 'for ', 'while '))):
-                    try:
-                        result = eval(code_stripped, self.namespace, self.namespace)
-                    except:
-                        # Ignore errors in eval since we already executed with exec
-                        pass
+                # Parse the code into an AST
+                try:
+                    tree = ast.parse(code)
+                except SyntaxError:
+                    # If it's a syntax error, run it to get the standard traceback
+                    exec(code, self.namespace, self.namespace)
+                    return stdout_capture.getvalue(), stderr_capture.getvalue(), None
+
+                # Check if the last node is an expression
+                if tree.body and isinstance(tree.body[-1], ast.Expr):
+                    # It's an expression! We want to capture its value.
+
+                    # Split into:
+                    # 1. Everything EXCEPT the last node (run with exec)
+                    # 2. The last node (run with eval)
+                    last_node = tree.body[-1]
+
+                    body_nodes = tree.body[:-1]
+
+                    # Execute previous statements if any
+                    if body_nodes:
+                        module = ast.Module(body=body_nodes, type_ignores=[])
+                        exec(compile(module, filename="<string>", mode="exec"), self.namespace, self.namespace)
+
+                    # Evaluate the last expression
+                    expr = ast.Expression(body=last_node.value)
+                    result = eval(compile(expr, filename="<string>", mode="eval"), self.namespace, self.namespace)
+                else:
+                    # Last node is not an expression (e.g. assignment, function def)
+                    # Just exec the whole thing
+                    exec(code, self.namespace, self.namespace)
+
         except Exception:
             # Catch any exceptions and add to stderr
             stderr_capture.write(traceback.format_exc())

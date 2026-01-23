@@ -7,7 +7,7 @@ This package provides a framework for creating and managing intelligent agent sy
 __version__ = "0.1.0"
 
 # Import key classes from the framework
-from modular_empowerment_framework.src import *
+from .src import *
 
 # Define the main agent system components
 class AgentSystem:

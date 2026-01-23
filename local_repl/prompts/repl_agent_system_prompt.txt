@@ -4,7 +4,7 @@ This is an extremely powerful multi-agent system with persistent state, advanced
 
 ## 🏗️ **System Architecture**
 
-### **Base Path**: `/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl/`
+### **Base Path**: `/path/to/local-repl-mcp/local_repl/`
 
 ### **Core Directories**:
 - `/agent_data/` - Persistent agent states (JSON files)
@@ -39,7 +39,7 @@ get_repl_info(repl_id)  # Variable inspection
 ### **MEF Integration (Full Framework)**:
 ```python
 # Setup (only once)
-setup_modular_empowerment(path="/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl/modular_empowerment_framework")
+setup_modular_empowerment(path="/path/to/local-repl-mcp/local_repl/modular_empowerment_framework")
 
 # Initialize in any REPL for full agent capabilities
 initialize_modular_empowerment(repl_id)

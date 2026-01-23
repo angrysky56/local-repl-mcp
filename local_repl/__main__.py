@@ -68,7 +68,7 @@ def run_python_in_repl(code: str, repl_id: str) -> str:
         output += f"--- Result ---\n{result!r}"
     
     # Return response or default message
-    return output.strip() if output.strip() else "Code executed successfully with no output."
+    return output.strip() if output.strip() else "Code executed successfully. No output returned (if you simply assigned variables, this is expected)."
 
 
 @mcp.tool()
@@ -98,7 +98,7 @@ def get_repl_info(repl_id: str) -> str:
     
     # Get information about defined variables
     variables = []
-    for name, value in repl.globals.items():
+    for name, value in repl.namespace.items():
         if not name.startswith("__"):
             try:
                 type_name = type(value).__name__
@@ -128,6 +128,70 @@ def delete_repl(repl_id: str) -> str:
         return f"REPL {repl_id} deleted successfully."
     else:
         return f"REPL {repl_id} not found."
+
+
+@mcp.tool()
+def initialize_modular_empowerment(repl_id: str) -> str:
+    """
+    Initialize the Modular Empowerment Framework in a specific REPL.
+
+    Args:
+        repl_id: ID of the REPL to initialize in
+
+    Returns:
+        str: Result of the initialization
+    """
+    # Create the initialization code
+    init_code = f"""
+import sys
+import os
+import random
+import numpy as np
+from typing import Dict, List, Any
+
+try:
+    # Try importing from the package structure
+    try:
+        from local_repl.modular_empowerment_framework.src.integration.integration import ModularEmpowermentIntegration
+    except ImportError:
+        # Fallback for direct execution
+        from modular_empowerment_framework.src.integration.integration import ModularEmpowermentIntegration
+
+    # Configure the MEF
+    config = {{
+        'individual_empowerment_weight': 0.4,
+        'group_empowerment_weight': 0.4,
+        'mdf_eo_balance': 0.6,
+        'mdf_config': {{
+            'quality_score_threshold': 0.5
+        }},
+        'eo_config': {{
+            'cooperation_factor': 0.6
+        }}
+    }}
+
+    # Initialize the integrated framework
+    mef = ModularEmpowermentIntegration(config)
+    print("✅ Modular Empowerment Framework initialized successfully!")
+except ImportError as e:
+    print(f"❌ Import error: {{e}}")
+    print("Missing dependencies. Please install required packages:")
+    print("  pip install numpy")
+    raise
+except Exception as e:
+    print(f"❌ Error initializing framework: {{e}}")
+    print("Make sure the framework is properly set up at the specified path.")
+    raise
+"""
+
+    # Run the initialization code in the specified REPL
+    result = run_python_in_repl(code=init_code, repl_id=repl_id)
+
+    # Add success message if initialization was successful
+    if "✅ Modular Empowerment Framework initialized successfully!" in result:
+        return f"{result}\n\nFramework successfully initialized in REPL {repl_id}."
+    else:
+        return f"{result}\n\nFailed to initialize framework in REPL {repl_id}."
 
 
 @mcp.prompt()

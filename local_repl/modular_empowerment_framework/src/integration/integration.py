@@ -9,8 +9,8 @@ import numpy as np
 from typing import Dict, List, Any, Callable, Tuple, Optional
 import logging
 
-from src.mdf.core import MDFCore, Thought
-from src.eo.core import EOCore, Agent, Environment
+from ..mdf.core import MDFCore, Thought
+from ..eo.core import EOCore, Agent, Environment
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')

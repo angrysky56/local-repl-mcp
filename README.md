@@ -115,14 +115,15 @@ There are several powerful use cases for a local Python REPL integrated with Cla
 
 ```json
 {
-  "mcp_servers": {
+  "mcpServers": {
     "LocalREPL": {
       "command": "uv",
       "args": [
         "--directory",
-        "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl",
+        "/absolute/path/to/local-repl-mcp",
         "run",
-        "server.py"
+        "-m",
+        "local_repl"
       ]
     }
   }

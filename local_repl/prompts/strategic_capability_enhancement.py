@@ -1,3 +1,5 @@
+import os
+
 """
 Strategic Capability Enhancement Prompt
 
@@ -11,6 +13,9 @@ following the Adaptive Engineering Lead methodology.
 """
 
 def strategic_capability_enhancement() -> str:
+    # Calculate relative path to local_repl directory
+    repl_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
     return """
     # Strategic Capability Enhancement Protocol
 
@@ -22,7 +27,7 @@ def strategic_capability_enhancement() -> str:
     enhancement_repl = create_python_repl()
 
     # Initialize with full system access
-    setup_result = setup_modular_empowerment(path="/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl/modular_empowerment_framework")
+    setup_result = setup_modular_empowerment(path="/absolute/path/to/local-repl-mcp/local_repl/modular_empowerment_framework")
     init_result = initialize_modular_empowerment(repl_id=enhancement_repl)
 
     print("🔍 Strategic Enhancement Analysis Initiated")
@@ -548,7 +553,7 @@ def strategic_capability_enhancement() -> str:
             \"\"\"Save performance report to file\"\"\"
             if output_path is None:
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                output_path = f"/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl/output/performance_report_{timestamp}.json"
+                output_path = f"/absolute/path/to/local-repl-mcp/local_repl/output/performance_report_{timestamp}.json"
 
             report = self.generate_performance_report()
 
@@ -674,7 +679,7 @@ def strategic_capability_enhancement() -> str:
         print(f"    • {finding}")
 
     # Save integration test results
-    test_report_path = "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl/output/integration_test_results.json"
+    test_report_path = "/absolute/path/to/local-repl-mcp/local_repl/output/integration_test_results.json"
     with open(test_report_path, 'w') as f:
         json.dump(integration_results, f, indent=2)
 
@@ -756,7 +761,7 @@ def strategic_capability_enhancement() -> str:
         print(f"  • {step}")
 
     # Save enhancement documentation
-    doc_path = "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl/output/enhancement_phase1_report.json"
+    doc_path = "/absolute/path/to/local-repl-mcp/local_repl/output/enhancement_phase1_report.json"
     with open(doc_path, 'w') as f:
         json.dump(enhancement_summary, f, indent=2)
 
@@ -803,7 +808,7 @@ def strategic_capability_enhancement() -> str:
     - Fully backward compatible with existing agents
     '''
 
-    md_path = "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl/output/enhancement_summary.md"
+    md_path = "/absolute/path/to/local-repl-mcp/local_repl/output/enhancement_summary.md"
     with open(md_path, 'w') as f:
         f.write(md_summary)
 

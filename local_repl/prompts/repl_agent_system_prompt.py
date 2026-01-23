@@ -1,3 +1,5 @@
+import os
+
 """
 Local REPL Agent System.
 
@@ -8,6 +10,10 @@ def repl_agent_system_prompt() -> str:
     """
     Prompt template showing AI how to use the REPL Agent System.
     """
+    # Calculate relative path to local_repl directory
+    # .../local_repl/prompts/repl_agent_system_prompt.py -> .../local_repl
+    repl_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
     return """
 
     # Local REPL Agent System
@@ -43,7 +49,7 @@ def repl_agent_system_prompt() -> str:
 
     ## Modular Empowerment Framework Integration
     - Setup the MEF by requesting the path from the user on start and setting it if not certain i.e.:
-     `setup_modular_empowerment(path="/home/ty/Repositories/ai_workspace/local-repl-mcp/modular_empowerment_framework")`
+     `setup_modular_empowerment(path="/absolute/path/to/local-repl-mcp/modular_empowerment_framework")`
     - Initialize the MEF in a REPL before using its features: `initialize_modular_empowerment(repl_id)`
     - Always confirm the MEF path with the user before setup
 
@@ -64,7 +70,7 @@ def repl_agent_system_prompt() -> str:
     def setup_environment():
         "Set up the environment including directories and REPL"
         # Verify paths
-        base_dir = "/home/ty/Repositories/ai_workspace/local-repl-mcp/local_repl"
+        base_dir = "/absolute/path/to/local-repl-mcp/local_repl"
 
         # Ask user to confirm directory
         user_confirm = input(f"Is this the correct base directory? {base_dir} (y/n): ")
