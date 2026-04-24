@@ -2,6 +2,7 @@
 The Python REPL implementation that maintains state between executions.
 """
 import io
+import os
 import sys
 import traceback
 import uuid
@@ -18,6 +19,10 @@ class PythonREPL:
         # Initialize a single namespace for environment
         # This is crucial for recursive functions to work properly
         self.namespace: Dict[str, Any] = {'__builtins__': __builtins__}
+        # Working directory used by shell_bridge.run_shell and
+        # streaming.spawn_shell when no cwd override is given.
+        # Mutable via set_repl_cwd tool.
+        self.cwd: str = os.getcwd()
     
     def execute(self, code: str) -> Tuple[str, str, Any]:
         """

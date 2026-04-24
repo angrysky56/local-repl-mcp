@@ -7,6 +7,9 @@ server instance from `local_repl` package.
 from typing import Dict
 from mcp.server.fastmcp import FastMCP
 from .repl import PythonREPL
+from .shell_bridge import register_shell_tools
+from .streaming import register_streaming_tools
+from .evolution_memory import register_memory_tools
 
 
 # Dictionary to store REPL instances by ID
@@ -18,6 +21,13 @@ mcp = FastMCP(
     stateless_http=False,
     debug=False  # Disable debug mode to reduce potential connection issues
 )
+
+# Register the new modules. Order doesn't matter but keeping it
+# consistent (execution → streaming → memory) makes the tool list
+# render in a natural reading order for the agent.
+register_shell_tools(mcp, repl_instances)
+register_streaming_tools(mcp, repl_instances)
+register_memory_tools(mcp)
 
 
 @mcp.tool()

@@ -163,6 +163,67 @@ cd local-repl-mcp
 - `get_repl_info(repl_id)` - Shows information about a specific REPL
 - `delete_repl(repl_id)` - Deletes a REPL instance
 
+## Shell, Streaming, and Operational Memory (v0.2)
+
+As of v0.2 the REPL is no longer Python-only. Three modules expand it into
+a full CLI orchestration layer:
+
+### Shell bridge (`shell_bridge.py`)
+Run one-shot commands with structured output. Every call auto-logs to
+`evolution.db` so past executions become queryable memory.
+
+- `run_shell(command, repl_id, timeout_seconds=30, cwd=None, use_shell=False, env_extra=None)`
+  Returns `{command, cwd, stdout, stderr, exit_code, duration_ms, timed_out, truncated_stdout, truncated_stderr}`.
+  `use_shell=True` enables pipes/redirects via `/bin/sh`. Blocklist refuses
+  `sudo`, `rm -rf /`, `dd of=/dev/…`, `shutdown`/`reboot`, fork bombs, and
+  chained variants like `echo x && sudo poweroff`.
+- `set_repl_cwd(repl_id, path)` / `get_repl_cwd(repl_id)` - track a
+  working directory per REPL so subsequent `run_shell` calls start there.
+
+### Streaming (`streaming.py`)
+Long-running processes with non-blocking output drain.
+
+- `spawn_shell(command, repl_id, cwd=None, use_shell=False)` → returns
+  `proc_id` (separate from OS PID to avoid reuse issues).
+- `tail_shell_output(proc_id, n_lines=50, stream='both', drain=False)` -
+  read recent lines without blocking. Use `drain=True` in polling loops
+  so the next call sees only NEW output.
+- `send_to_shell(proc_id, input_text)` - write to stdin for interactive
+  REPLs/servers.
+- `kill_shell(proc_id, signal_name='SIGTERM')` - supports SIGTERM/SIGKILL/
+  SIGINT/SIGHUP.
+- `wait_shell(proc_id, timeout_seconds=30)` - block until exit.
+- `list_shells()` / `reap_exited()` - inventory and cleanup.
+
+### Operational memory (`evolution_memory.py`)
+SQLite-backed log of every shell command. Like Atuin, but queryable by
+the agent directly.
+
+- `query_command_history(pattern=None, repl_id=None, only_failures=False, only_timeouts=False, since=None, limit=20)` -
+  `pattern` uses SQL LIKE (`%ripgrep%`), `since` accepts `'1h'`, `'30m'`,
+  `'2d'`, or ISO timestamps.
+- `command_stats(since=None, top_n=5)` - total/pass/fail, success rate,
+  top commands, top failures, slowest runs.
+- `tag_command(command_id, tags)` - attach `['flaky', 'solved']` etc.
+- `forget_command(command_id)` - delete rows that captured secrets.
+- `vacuum_memory(keep_last_n=5000)` - cap db size.
+
+### Verify the install
+
+After pulling these changes:
+
+```bash
+uv run python -m local_repl.doctor
+```
+
+Expects all 7 checks green before you restart Claude Desktop.
+
+> **Note on `server.py` vs `__main__.py`:** The live entry point is
+> `__main__.py` (invoked by `uv run -m local_repl`). `server.py` is a
+> standalone legacy copy and does not receive v0.2 tools. If you switch
+> the mcp config to `local-repl-mcp` (the pyproject script target), you
+> won't get the new tools — stick with `-m local_repl`.
+
 ### Example Workflow
 
 ```python
