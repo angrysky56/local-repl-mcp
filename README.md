@@ -196,14 +196,11 @@ Long-running processes with non-blocking output drain.
 - `list_shells()` / `reap_exited()` - inventory and cleanup.
 
 ### Operational memory (`evolution_memory.py`)
-SQLite-backed log of every shell command. Like Atuin, but queryable by
-the agent directly.
 
-- `query_command_history(pattern=None, repl_id=None, only_failures=False, only_timeouts=False, since=None, limit=20)` -
-  `pattern` uses SQL LIKE (`%ripgrep%`), `since` accepts `'1h'`, `'30m'`,
-  `'2d'`, or ISO timestamps.
-- `command_stats(since=None, top_n=5)` - total/pass/fail, success rate,
-  top commands, top failures, slowest runs.
+SQLite-backed log of every shell command. Like Atuin, but queryable by the agent directly.
+
+- `query_command_history(pattern=None, repl_id=None, only_failures=False, only_timeouts=False, since=None, limit=20)` - `pattern` uses SQL LIKE (`%ripgrep%`), `since` accepts `'1h'`, `'30m'`, `'2d'`, or ISO timestamps.
+- `command_stats(since=None, top_n=5)` - total/pass/fail, success rate, top commands, top failures, slowest runs.
 - `tag_command(command_id, tags)` - attach `['flaky', 'solved']` etc.
 - `forget_command(command_id)` - delete rows that captured secrets.
 - `vacuum_memory(keep_last_n=5000)` - cap db size.
@@ -213,7 +210,9 @@ the agent directly.
 After pulling these changes:
 
 ```bash
+```
 uv run python -m local_repl.doctor
+
 ```
 
 Expects all 7 checks green before you restart Claude Desktop.
@@ -223,6 +222,83 @@ Expects all 7 checks green before you restart Claude Desktop.
 > standalone legacy copy and does not receive v0.2 tools. If you switch
 > the mcp config to `local-repl-mcp` (the pyproject script target), you
 > won't get the new tools — stick with `-m local_repl`.
+
+## Recommended CLI Toolchain
+
+The shell bridge shines when paired with modern CLI utilities that produce structured, predictable output (exit codes, JSON flags, counts-first patterns). The recipes below assume **Pop!\_OS 24.04 / Ubuntu 24.04**; other distros use the same package names with their own package manager.
+
+### Tier A — apt (one sudo command)
+
+```bash
+sudo apt update
+sudo apt install -y bat git-delta hyperfine
+```
+
+`fd` **/** `bat` **naming fix (no sudo).** Debian/Ubuntu ship `fd-find` / `bat` as `fdfind` / `batcat` to avoid name collisions. Symlink the usual names so scripts work unchanged:
+
+```bash
+mkdir -p ~/.local/bin
+ln -sf "$(which fdfind)" ~/.local/bin/fd
+ln -sf "$(which batcat)" ~/.local/bin/bat
+echo "$PATH" | tr ':' '\n' | grep -q '\.local/bin' && echo OK
+```
+
+`ast-grep` **and nvm-installed npm binaries.** If you use `nvm`, npm installs global binaries under `~/.nvm/versions/node/<ver>/bin/`. That path is added to `$PATH` by shell init files, which don't fire when an MCP server launches via launchd/systemd. Symlink into `~/.local/bin` so it's visible to any subprocess regardless of how the parent was started:
+
+```bash
+ln -sf "$(npm root -g)/../bin/ast-grep" ~/.local/bin/ast-grep
+ast-grep --version
+```
+
+### Tier B — user-space (no sudo)
+
+```bash
+# ast-grep: structural code search/rewrite.
+npm install -g @ast-grep/cli
+
+# tokei: per-language code statistics.
+cargo install tokei
+
+# just: self-documenting command runner via uv (no sudo, no cargo compile).
+uv tool install rust-just
+```
+
+### watchexec — prebuilt `.deb` (skip cargo)
+
+**Don't** `cargo install watchexec-cli`**.** As of watchexec 2.5.1 the crate uses `fmt::from_fn`, still nightly-only on Rust 1.95 (`debug_closure_helpers` tracking issue [#117729](https://github.com/rust-lang/rust/issues/117729); stabilization PR [#146099](https://github.com/rust-lang/rust/pull/146099) pending). Compilation fails with `error[E0658]`. Use the upstream `.deb` instead:
+
+```bash
+WATCHEXEC_VER=2.5.1
+cd /tmp
+curl -fsSLO "https://github.com/watchexec/watchexec/releases/download/v${WATCHEXEC_VER}/watchexec-${WATCHEXEC_VER}-x86_64-unknown-linux-gnu.deb"
+echo "9bf40f223b3651e59c99ed463c44635fa71ab3f81b69927b5343b3935a4fdb14  watchexec-${WATCHEXEC_VER}-x86_64-unknown-linux-gnu.deb" | sha256sum -c -
+sudo dpkg -i "watchexec-${WATCHEXEC_VER}-x86_64-unknown-linux-gnu.deb"
+```
+
+For future versions, grab the matching checksum from `https://github.com/watchexec/watchexec/releases/download/v<VER>/watchexec-<VER>-x86_64-unknown-linux-gnu.deb.sha256`.
+
+### Verify the toolchain
+
+```bash
+for cmd in rg jq fd bat delta tokei hyperfine watchexec ast-grep just; do
+  printf "%-12s " "$cmd"
+  command -v "$cmd" >/dev/null && echo "✓ $($cmd --version 2>/dev/null | head -1)" || echo "✗ MISSING"
+done
+```
+
+Ten green checkmarks = ai-cli skill has its full toolkit.
+
+### Why these specific tools
+
+ToolReplacesAI-relevant win`rggrep`Respects `.gitignore`; `--json` output; blazing fast`fdfind`Simpler syntax, parallel walks, respects `.gitignoreast-grep`regex for codeMatches code by AST pattern, not text — kills "old_string not unique" edit failures`jq`sed/awk on JSONSafe, predictable JSON parsing`tokeiwc -l` + findPer-language code stats in one call — great first-touch overview`batcat`Line numbers + git change markers give the agent immediate context`delta`diff viewerSide-by-side, syntax-aware diffs`hyperfinetime ...`Statistical benchmarking with JSON export`watchexec`polling loopsReactive file-change triggers instead of polling`just`bash scriptsSelf-documenting recipes; `just --list` shows every task
+
+### Known gotchas
+
+- `sg` **is not** `ast-grep`**.** On Debian/Ubuntu `sg` is the `setsid`/script-grep binary from `util-linux`. Use the full name `ast-grep` — the ast-grep team dropped the `sg` shortname in 2024 for this exact reason.
+- **ast-grep pattern syntax is specific.** `$$$` binds to argument lists, not arbitrary bodies. To match "any function by name" use `def $NAME`, not `def $NAME($$$): $$$` — the latter silently returns zero matches.
+- `use_shell=True` **runs under** `/bin/sh`**, not bash.** No brace expansion `{a,b}`, no `[[ ]]`, no process substitution. Use POSIX sh syntax or invoke `bash -c '...'` explicitly.
+- `rg` **and stdin.** Ripgrep's `is_readable_stdin` heuristic hangs waiting on stdin if the parent's stdin is a pipe. The shell bridge handles this by passing `stdin=DEVNULL` by default.
+- `stdin_input` **parameter with JSON payloads.** The MCP tool-call serializer auto-parses JSON-looking strings into dicts, failing Pydantic's `str` check. Workaround: pipe via `use_shell=True` with `echo '{...}' | jq ...`.
 
 ### Example Workflow
 
