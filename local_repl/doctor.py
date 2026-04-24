@@ -194,6 +194,56 @@ def check_streaming_spawn_and_tail() -> bool:
     return True
 
 
+def check_venv_exec_self() -> bool:
+    """run_python_in_venv with our own python (as a stand-in for any venv)."""
+    from local_repl.repl import PythonREPL
+    from local_repl.venv_exec import register_venv_tools
+    from mcp.server.fastmcp import FastMCP
+    import sys
+
+    test_mcp = FastMCP(name="doctor-venv", debug=False)
+    instances: dict = {}
+    register_venv_tools(test_mcp, instances)
+    repl = PythonREPL()
+    instances[repl.repl_id] = repl
+
+    run = test_mcp._tool_manager.get_tool("run_python_in_venv").fn
+
+    # Use sys.executable — any valid python works for this smoke test.
+    result = run(
+        code="import sys; print('hello from', sys.version_info[:2])",
+        venv_path=sys.executable,
+        repl_id=repl.repl_id,
+    )
+    assert result["ok"], f"exit {result['exit_code']}: {result['stderr']}"
+    assert "hello from" in result["stdout"], f"unexpected stdout: {result['stdout']!r}"
+    _info(f"executed in {result['duration_ms']:.1f} ms via {result['python_path']}")
+    return True
+
+
+def check_venv_exec_bad_path() -> bool:
+    """Non-existent venv path should return structured error, not raise."""
+    from local_repl.repl import PythonREPL
+    from local_repl.venv_exec import register_venv_tools
+    from mcp.server.fastmcp import FastMCP
+
+    test_mcp = FastMCP(name="doctor-venv-bad", debug=False)
+    instances: dict = {}
+    register_venv_tools(test_mcp, instances)
+    repl = PythonREPL()
+    instances[repl.repl_id] = repl
+
+    run = test_mcp._tool_manager.get_tool("run_python_in_venv").fn
+    result = run(
+        code="print('ok')",
+        venv_path="/definitely/does/not/exist",
+        repl_id=repl.repl_id,
+    )
+    assert result["ok"] is False
+    assert result["error"] and "does not exist" in result["error"]
+    return True
+
+
 def main() -> int:
     _section("LocalREPL doctor — checking unlocks")
 
@@ -205,6 +255,8 @@ def main() -> int:
         ("evolution_memory: log_command writes row", check_memory_roundtrip),
         ("evolution_memory: query_command_history finds it", check_memory_query),
         ("streaming: spawn + tail + wait", check_streaming_spawn_and_tail),
+        ("venv_exec: run via sys.executable", check_venv_exec_self),
+        ("venv_exec: bad path → structured error", check_venv_exec_bad_path),
     ]
 
     failures = _run_checks(all_checks)

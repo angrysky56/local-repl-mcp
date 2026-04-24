@@ -10,6 +10,7 @@ from .repl import PythonREPL
 from .shell_bridge import register_shell_tools
 from .streaming import register_streaming_tools
 from .evolution_memory import register_memory_tools
+from .venv_exec import register_venv_tools
 
 
 # Dictionary to store REPL instances by ID
@@ -28,6 +29,7 @@ mcp = FastMCP(
 register_shell_tools(mcp, repl_instances)
 register_streaming_tools(mcp, repl_instances)
 register_memory_tools(mcp)
+register_venv_tools(mcp, repl_instances)
 
 
 @mcp.tool()
