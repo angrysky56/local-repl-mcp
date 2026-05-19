@@ -1,7 +1,7 @@
 """
 LocalREPL: A local Python REPL for Claude Desktop
 """
-from local_repl.__main__ import mcp
+from local_repl.server import mcp
 
 # Expose the MCP server instance
 __all__ = ['mcp']

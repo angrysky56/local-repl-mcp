@@ -205,23 +205,24 @@ SQLite-backed log of every shell command. Like Atuin, but queryable by the agent
 - `forget_command(command_id)` - delete rows that captured secrets.
 - `vacuum_memory(keep_last_n=5000)` - cap db size.
 
+### Virtual Environment Execution (`venv_exec.py`)
+
+Run Python code inside isolated virtual environments with their own packages and interpreters.
+
+- `run_python_in_venv(code, venv_path, repl_id=None)` - Run Python code inside a specified virtual environment path.
+- `find_venv(path=None)` - Discover python virtual environments automatically.
+
 ### Verify the install
 
 After pulling these changes:
 
 ```bash
-```
 uv run python -m local_repl.doctor
-
 ```
 
-Expects all 7 checks green before you restart Claude Desktop.
+Expects all 9 checks green before you restart Claude Desktop.
 
-> **Note on `server.py` vs `__main__.py`:** The live entry point is
-> `__main__.py` (invoked by `uv run -m local_repl`). `server.py` is a
-> standalone legacy copy and does not receive v0.2 tools. If you switch
-> the mcp config to `local-repl-mcp` (the pyproject script target), you
-> won't get the new tools — stick with `-m local_repl`.
+> **Note on unified server:** The entry point modules `server.py` and `__main__.py` have been fully unified. The pyproject script command `local-repl-mcp` is now 100% feature-complete, containing all REPL, shell, streaming, memory, and virtual environment execution tools!
 
 ## Recommended CLI Toolchain
 

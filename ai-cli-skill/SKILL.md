@@ -82,10 +82,14 @@ Trigger this skill whenever the user's request involves any of:
 - Extracting fields from JSON/YAML configs or API responses
 - Running the same shell sequence repeatedly
 
-Do NOT trigger this skill for:
-- Pure Python work (use `run_python_in_repl` directly)
-- Editing a single file (use `str_replace` or `edit_block`)
-- Questions that don't involve the filesystem
+## Isolated Virtual Environment Execution
+
+When performing Python execution or testing against target projects that have their own virtual environments (such as `.venv`, `venv`, `env`), avoid running inside the default REPL unless the dependencies are installed globally. Instead, use the virtual environment execution tools:
+
+- `run_python_in_venv(code, venv_path, repl_id=None)`: Runs Python code inside the context of the designated virtual environment or Python interpreter path.
+- `find_venv(path=None)`: Automatically scans for virtual environments recursively from the given path to identify target environments.
+
+This ensures dependency isolation and clean runs, preventing dependency conflicts or import errors.
 
 ## Standard workflow
 
